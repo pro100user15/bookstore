@@ -1,0 +1,12 @@
+.categoryItem {
+    display: flex;
+    padding: 15px;
+    border: 2px solid teal;
+    margin-top: 15px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link {
+    font-size: 25px;
+}
