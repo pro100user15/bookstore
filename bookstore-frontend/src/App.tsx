@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import React, {useState, useEffect, FC} from 'react';
+import {Routes, Route} from 'react-router-dom'
 import Header from "./components/Header/Header";
-import {getCurrentUser, login} from "./services/AuthorizationService";
+import AuthorizationService from "./services/AuthorizationService";
 import {Role} from "./models/Authority";
 import {UserAuthorization, UserLogin} from "./models/User";
 import HomePage from "./pages/HomePage";
@@ -11,33 +11,27 @@ import CategoryDetails from "./components/Categories/CategoryDetails/CategoryDet
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginForm from "./components/LoginForm";
 import Profile from "./pages/Profile";
+import AppRouter from "./router/AppRouter";
+import {useTypedSelector} from "./hooks/useTypedSelector";
+import {useDispatch} from "react-redux";
+import {AuthActionEnum, SetAuthAction} from "./store/actions/auth";
+import jwt from "jwt-decode";
 
-function App() {
-    const [user, setUser] = useState<UserAuthorization | null>();
-    const [authorities, setAuthorities] = useState<Role[]>([]);
+const App: FC = () => {
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getCurrentUser().then(response => {
-            setUser(response);
-            if (response !== null) {
-                setAuthorities(response.roles);
-            }
-        });
+        if(localStorage.getItem('token')) {
+            const user: UserAuthorization = jwt<UserAuthorization>(localStorage.getItem('token') || '');
+            dispatch({type: AuthActionEnum.SET_AUTH, payload: user} as SetAuthAction);
+        }
     }, []);
 
     return (
-        <BrowserRouter>
-            <Header authorities={authorities}/>
-            <Routes>
-                <Route path='/' element={<HomePage />}/>
-                <Route path='/login' element={<LoginForm />}/>
-                <Route path='/registration' element={<RegistrationForm />}/>
-                <Route path='/profile' element={<Profile />}/>
-                <Route path='/categories' element={<Category />}/>
-                <Route path='/categories/:id' element={<CategoryDetails />}/>
-                <Route path='*' element={<NotFoundPage />}/>
-            </Routes>
-        </BrowserRouter>
+        <>
+            <Header/>
+            <AppRouter/>
+        </>
     );
 }
 

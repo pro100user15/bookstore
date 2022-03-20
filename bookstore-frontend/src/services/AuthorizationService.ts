@@ -1,46 +1,37 @@
-import axios from 'axios';
+import $api from "../http";
 import jwt from 'jwt-decode'
 import {UserAuthorization, UserLogin, UserRegistration} from "../models/User";
+import {useDispatch} from "react-redux";
+import {AxiosResponse} from "axios";
 
+class AuthorizationService {
 
-
-export const authHeader = async () => {
-    const token = localStorage.getItem("token");
-
-    if(token) {
-        return { Authorization: 'Bearer ' + token };
+    static async login(user: UserLogin): Promise<AxiosResponse<string>> {
+        return $api
+            .post<string>('/login', user)
+            .then(response => {
+                console.log(response);
+                if(response.data) {
+                    localStorage.setItem('token', response.data);
+                }
+                return response;
+            });
     }
-    else {
-        return {};
+
+    static async logout() {
+        localStorage.removeItem("token");
+    }
+
+    static async register(user: UserRegistration) {
+        return $api
+            .post('/registration', user);
+    }
+
+    static async getCurrentUser() : Promise<UserAuthorization | null> {
+        if(localStorage.getItem("token"))
+            return jwt<UserAuthorization>(localStorage.getItem("token") || '');
+        return null;
     }
 }
 
-export const login = async (user: UserLogin) => {
-    console.log(user);
-    return axios
-        .post('http://localhost:8080/login', user)
-        .then(response => {
-            if(response.data.token) {
-                localStorage.setItem("token", response.data.token);
-                console.log(response.data.token);
-                const user = jwt(response.data.token);
-                console.log(user);
-            }
-        });
-}
-
-export const logout = () => {
-    localStorage.removeItem("token");
-}
-
-export const register = (user: UserRegistration) => {
-    const register = 'registration'
-    return axios
-        .post('http://localhost:8080/registration', user);
-}
-
-export async function getCurrentUser() : Promise<UserAuthorization | null> {
-    if(localStorage.getItem("token"))
-        return jwt<UserAuthorization>(localStorage.getItem("token") || '');
-    return null;
-}
+export default AuthorizationService;

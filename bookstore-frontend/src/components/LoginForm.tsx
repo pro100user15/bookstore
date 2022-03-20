@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
-import {login} from "../services/AuthorizationService";
-import {UserLogin} from "../models/User";
+import AuthorizationService from "../services/AuthorizationService";
+import {UserAuthorization, UserLogin} from "../models/User";
+import jwt from "jwt-decode";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {useDispatch} from "react-redux";
+import {AuthActionEnum, SetAuthAction} from "../store/actions/auth";
 
 /*const useValidation = (value: string, validations: []) => {
 
@@ -66,6 +70,8 @@ const LoginForm: React.FC = () => {
     //const email = useInput('', []/*{isEmpty: true, minLength: 5, maxLength: 40, isValid: false}*/);
     //const password = useInput('', []/*{isEmpty: true, minLength: 8, maxLength: 64}*/);
 
+    const dispatch = useDispatch();
+
     const [user, setUser] = useState<UserLogin>({
         email: '',
         password: ''
@@ -73,7 +79,12 @@ const LoginForm: React.FC = () => {
 
     const handleClick = (e: React.MouseEvent) => {
         //const user: UserLogin = {email.value, password.}
-        login(user);
+        AuthorizationService.login(user)
+            .then(response => {
+                const user: UserAuthorization = jwt<UserAuthorization>(localStorage.getItem('token') || '');
+                console.log(user);
+                dispatch({type: AuthActionEnum.SET_AUTH, payload: user} as SetAuthAction);
+            });
         //email.value = '';
         //password.value = '';
     };

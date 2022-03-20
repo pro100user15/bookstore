@@ -47,15 +47,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserAuthenticationDTO authenticationUser) {
+    public ResponseEntity<String> login(@RequestBody UserAuthenticationDTO authenticationUser) {
         CustomUserDetails user = (CustomUserDetails) authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(authenticationUser.getEmail(),
                         authenticationUser.getPassword()))
                 .getPrincipal();
 
         String token = jwtProvider.generateToken(user);
-        Map<Object, Object> response = new HashMap<>();
-        response.put("token", token);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(token);
     }
 }

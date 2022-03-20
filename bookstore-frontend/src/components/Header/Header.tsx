@@ -1,16 +1,14 @@
-import React from "react";
+import React, {FC} from "react";
 import {NavLink} from "react-router-dom";
 import Logo from '@mui/icons-material/MenuBookOutlined';
 
 import './Header.css';
 import {Role} from "../../models/Authority";
-import {logout} from "../../services/AuthorizationService";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
+import AuthorizationService from "../../services/AuthorizationService";
 
-interface HeaderProps {
-    authorities: Role[]
-}
-
-const Header: React.FC<HeaderProps> = ({authorities}) => {
+const Header: FC = () => {
+    const roles: Role[] = useTypedSelector<Role[]>(state => state.auth.user.roles);
     return (
         <header>
             <nav>
@@ -19,19 +17,19 @@ const Header: React.FC<HeaderProps> = ({authorities}) => {
                     <span>Bookstore</span>
                 </NavLink>
                 <NavLink to={'/books'} className='link'>Books</NavLink>
-                {authorities.includes(Role.MODERATOR) && (
+                {(roles && roles.includes(Role.MODERATOR)) && (
                     <NavLink to={'/categories'} className='link'>Categories</NavLink>
                 )}
-                {authorities.includes(Role.ADMIN) && (
+                {(roles && roles.includes(Role.ADMIN)) && (
                     <NavLink to={'/admin'} className='link'>Admin</NavLink>
                 )}
-                {authorities.length >= 1 && (
+                {(roles && roles.length) >= 1 && (
                     <div style={{display: "flex"}}>
                         <NavLink to={'/profile'} className='link'>Profile</NavLink>
-                        <NavLink to={'/'} className='link' onClick={logout}>Logout</NavLink>
+                        <NavLink to={'/'} className='link' onClick={AuthorizationService.logout}>Logout</NavLink>
                     </div>
                 )}
-                {authorities.length === 0 && (
+                {(!roles || roles.length === 0) && (
                     <div style={{display: "flex"}}>
                         <NavLink to={'/login'} className='link'>Login</NavLink>
                         <NavLink to={'/registration'} className='link login'>Sign Up</NavLink>

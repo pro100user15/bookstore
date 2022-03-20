@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class UserDTO {
+    private String id;
     private String name;
     private String surname;
     private String email;

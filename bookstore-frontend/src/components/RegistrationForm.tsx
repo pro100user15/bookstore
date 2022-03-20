@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {register} from "../services/AuthorizationService";
+import AuthorizationService from "../services/AuthorizationService";
 import TextField from "@mui/material/TextField";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {UserRegistration} from "../models/User";
 
 const RegistrationForm = () => {
     const [user, setUser] = useState<UserRegistration>({
+        id:-1,
         name: '',
         surname: '',
         email: '',
@@ -17,11 +18,12 @@ const RegistrationForm = () => {
 
     const handleClick = (e: React.MouseEvent) => {
         console.log(user);
-        register(user)
-            .then(response => {
+        AuthorizationService.register(user)
+            /*.then(response => {
                 console.log(response.data);
-            });
+            })*/;
         setUser({
+            id: -1,
             name: '',
             surname: '',
             email: '',
