@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 import CategoryService from '../../../services/CategoryService';
 
@@ -9,29 +9,25 @@ import MyButton from "../../UI/button/MyButton";
 import MyModal from '../../UI/modal/MyModal';
 
 import './Category.css';
+import {useDispatch} from "react-redux";
+import {CategoryActionEnum} from "../../../store/actions/category";
 
-const Category = () => {
-
-    const [categories, setCategories] = useState([]);
+const Category: FC = () => {
+    //const categories = useTypedSelector<CategoryWithCountBooks[]>(state => state.category.categories);
     const [modalCreate, setModalCreate] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        CategoryService.getCategories().then((response) => {
-            setCategories(response.data);
-            console.log(response.data);
+        CategoryService.getCategories()
+            .then(response => {
+                dispatch({type: CategoryActionEnum.SET_CATEGORIES, payload: response.data});
         });
     }, []);
 
-    const create = (category) => {
-        CategoryService.createCategory(category).then((response => {
-                console.log(response.data);
-                setCategories([...categories, response.data]);
-                setModalCreate(false);
-        }));
-    };
 
-    const [editCategory1, setEditCategory1] = useState({});
+    /*const [editCategory1, setEditCategory1] = useState({});
     const [index, setIndex] = useState();
 
     const editCategory = (category, index) => {
@@ -50,14 +46,7 @@ const Category = () => {
                 setModalEdit(false);
             });
         }));
-    };
-
-    const remove = (category) => {
-        CategoryService.deleteCategory(category).then((response) => {
-            console.log(response.data);
-            setCategories(categories.filter(c => c.id !== category.id));
-        });
-    };
+    };*/
 
     return (
         <div className="container mt-5">
@@ -68,12 +57,12 @@ const Category = () => {
                 {
                     modalCreate
                     ?
-                        <AddCategoryForm create={create}/>
+                        <AddCategoryForm setModalCreate={setModalCreate}/>
                         :
-                        <EditCategoryForm editCategory={editCategory1} index={index} edit={edit}/>
+                        <EditCategoryForm setModalEdit={setModalEdit}/>
                 }
             </MyModal>
-            <CategoryList categories={categories} edit={editCategory} remove={remove}/>
+            <CategoryList setModalEdit={setModalEdit}/>
         </div>
     );
 }

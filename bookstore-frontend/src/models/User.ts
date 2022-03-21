@@ -1,6 +1,7 @@
 import {Role} from "./Authority";
 
-export interface UserRegistration {
+export interface User {
+    id: number,
     name: string,
     surname: string,
     email: string,
@@ -18,6 +19,5 @@ export interface UserLogin {
 export interface UserAuthorization {
     email: string,
     roles: Role[],
-    active: boolean,
     exp: number
 }

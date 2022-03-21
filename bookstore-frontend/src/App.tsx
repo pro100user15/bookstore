@@ -1,43 +1,38 @@
-import React, {useState, useEffect} from 'react';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import React, {FC, useEffect} from 'react';
 import Header from "./components/Header/Header";
-import {getCurrentUser, login} from "./services/AuthorizationService";
-import {Role} from "./models/Authority";
-import {UserAuthorization, UserLogin} from "./models/User";
-import HomePage from "./pages/HomePage";
-import RegistrationForm from "./components/RegistrationForm";
-import Category from "./components/Categories/Category/Category";
-import CategoryDetails from "./components/Categories/CategoryDetails/CategoryDetails";
-import NotFoundPage from "./pages/NotFoundPage";
-import LoginForm from "./components/LoginForm";
-import Profile from "./pages/Profile";
+import {UserAuthorization} from "./models/User";
+import AppRouter from "./router/AppRouter";
+import {useDispatch} from "react-redux";
+import {AuthActionEnum, IAuthState} from "./store/actions/auth";
+import jwt from "jwt-decode";
+import {useTypedSelector} from "./hooks/useTypedSelector";
 
-function App() {
-    const [user, setUser] = useState<UserAuthorization | null>();
-    const [authorities, setAuthorities] = useState<Role[]>([]);
+const App: FC = () => {
+
+    const token: string = useTypedSelector<string>(state => state.auth.token);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getCurrentUser().then(response => {
-            setUser(response);
-            if (response !== null) {
-                setAuthorities(response.roles);
-            }
-        });
-    }, []);
+        if(localStorage.getItem('token')) {
+            const token: string = localStorage.getItem('token') || '';
+            const user: UserAuthorization = jwt<UserAuthorization>(token);
+            dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user} as IAuthState});
+        }
+        else {
+            const user: UserAuthorization = {roles: ['ROLE_GUEST']} as UserAuthorization;
+            dispatch({
+                type: AuthActionEnum.SET_AUTH,
+                payload: {user: user} as IAuthState
+            });
+        }
+    }, [token]);
 
     return (
-        <BrowserRouter>
-            <Header authorities={authorities}/>
-            <Routes>
-                <Route path='/' element={<HomePage />}/>
-                <Route path='/login' element={<LoginForm />}/>
-                <Route path='/registration' element={<RegistrationForm />}/>
-                <Route path='/profile' element={<Profile />}/>
-                <Route path='/categories' element={<Category />}/>
-                <Route path='/categories/:id' element={<CategoryDetails />}/>
-                <Route path='*' element={<NotFoundPage />}/>
-            </Routes>
-        </BrowserRouter>
+        <>
+            <Header/>
+            <AppRouter/>
+        </>
     );
 }
 
