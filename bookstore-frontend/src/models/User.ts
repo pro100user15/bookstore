@@ -1,6 +1,6 @@
 import {Role} from "./Authority";
 
-export interface UserRegistration {
+export interface User {
     id: number,
     name: string,
     surname: string,

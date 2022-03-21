@@ -1,6 +1,6 @@
 import $api from "../http";
 import jwt from 'jwt-decode'
-import {UserAuthorization, UserLogin, UserRegistration} from "../models/User";
+import {UserAuthorization, UserLogin, User} from "../models/User";
 import {useDispatch} from "react-redux";
 import {AxiosResponse} from "axios";
 
@@ -11,6 +11,7 @@ class AuthorizationService {
             .post<string>('/login', user)
             .then(response => {
                 console.log(response);
+                console.log(response.data);
                 if(response.data) {
                     localStorage.setItem('token', response.data);
                 }
@@ -19,10 +20,11 @@ class AuthorizationService {
     }
 
     static async logout() {
-        localStorage.removeItem("token");
+        if(localStorage.getItem("token"))
+            localStorage.removeItem("token");
     }
 
-    static async register(user: UserRegistration) {
+    static async register(user: User) {
         return $api
             .post('/registration', user);
     }

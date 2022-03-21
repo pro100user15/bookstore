@@ -1,8 +1,16 @@
 import React from 'react';
 import CategoryItem from "../CategoryItem/CategoryItem";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
+import {FC} from "react";
+import {useTypedSelector} from "../../../hooks/useTypedSelector";
+import {CategoryWithCountBooks} from "../../../models/Category";
 
-const CategoryList = ({categories, edit, remove}) => {
+interface CategoryListProps {
+    setModalEdit(flag: boolean): void
+}
+
+const CategoryList: FC<CategoryListProps> = ({setModalEdit}) => {
+    const categories = useTypedSelector<CategoryWithCountBooks[]>(state => state.category.categories);
     return (
         <div>
             {
@@ -21,7 +29,7 @@ const CategoryList = ({categories, edit, remove}) => {
                                 timeout={500}
                                 classNames="category"
                             >
-                                <CategoryItem category={category} number={index + 1} edit={edit} remove={remove}/>
+                                <CategoryItem index={index} category={category} setModalEdit={setModalEdit}/>
                             </CSSTransition>
                     )
                 }

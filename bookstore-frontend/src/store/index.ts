@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers/index';
 import auth from "./reducers/auth";
 
-const rootReducer = combineReducers({auth});
+const rootReducer = combineReducers(reducers);
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 

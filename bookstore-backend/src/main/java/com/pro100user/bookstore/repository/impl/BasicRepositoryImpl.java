@@ -44,12 +44,14 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T update(T entity) {
+        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
     public T delete(T entity) {
+        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().remove(entity);
         return entity;
     }

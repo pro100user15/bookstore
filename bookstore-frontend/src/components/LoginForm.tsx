@@ -4,9 +4,9 @@ import {Button} from "@mui/material";
 import AuthorizationService from "../services/AuthorizationService";
 import {UserAuthorization, UserLogin} from "../models/User";
 import jwt from "jwt-decode";
-import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useDispatch} from "react-redux";
 import {AuthActionEnum, SetAuthAction} from "../store/actions/auth";
+import {useNavigate} from "react-router-dom";
 
 /*const useValidation = (value: string, validations: []) => {
 
@@ -72,6 +72,8 @@ const LoginForm: React.FC = () => {
 
     const dispatch = useDispatch();
 
+    const navigate = useNavigate();
+
     const [user, setUser] = useState<UserLogin>({
         email: '',
         password: ''
@@ -81,16 +83,17 @@ const LoginForm: React.FC = () => {
         //const user: UserLogin = {email.value, password.}
         AuthorizationService.login(user)
             .then(response => {
-                const user: UserAuthorization = jwt<UserAuthorization>(localStorage.getItem('token') || '');
-                console.log(user);
-                dispatch({type: AuthActionEnum.SET_AUTH, payload: user} as SetAuthAction);
+                const token: string = localStorage.getItem('token') || '';
+                const user: UserAuthorization = jwt<UserAuthorization>(token);
+                dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user}} as SetAuthAction);
+                navigate('/');
             });
         //email.value = '';
         //password.value = '';
     };
 
     return (
-        <div>
+        <div style={{margin: "50px 0 0 800px"}}>
             <h1>Login</h1>
             <form noValidate autoComplete="off">
                 <div>

@@ -1,6 +1,6 @@
 export interface Category {
     id: number,
-    name: number
+    name: string
 }
 
 export interface CategoryWithCountBooks extends Category {

@@ -72,25 +72,25 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryWithBooksDTO> create(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(
-                categoryMapper.toCategoryDTO(categoryService.create(categoryMapper.toCategory(categoryDTO))),
+                categoryMapper.toCategoryWithBooksDTO(categoryService.create(categoryMapper.toCategory(categoryDTO))),
                 HttpStatus.OK
         );
     }
 
     @PutMapping
-    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryWithBooksDTO> update(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(
-                categoryMapper.toCategoryDTO(categoryService.update(categoryMapper.toCategory(categoryDTO))),
+                categoryMapper.toCategoryWithBooksDTO(categoryService.update(categoryMapper.toCategory(categoryDTO))),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CategoryDTO> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<CategoryWithBooksDTO> delete(@PathVariable("id") Long id) {
         return new ResponseEntity<>(
-                categoryMapper.toCategoryDTO(categoryService.delete(categoryService.readById(id))),
+                categoryMapper.toCategoryWithBooksDTO(categoryService.delete(categoryService.readById(id))),
                 HttpStatus.OK
         );
     }

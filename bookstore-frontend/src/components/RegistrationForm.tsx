@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import AuthorizationService from "../services/AuthorizationService";
 import TextField from "@mui/material/TextField";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {UserRegistration} from "../models/User";
+import {User} from "../models/User";
+import {useNavigate} from "react-router-dom";
 
 const RegistrationForm = () => {
-    const [user, setUser] = useState<UserRegistration>({
+    const [user, setUser] = useState<User>({
         id:-1,
         name: '',
         surname: '',
@@ -16,12 +17,15 @@ const RegistrationForm = () => {
         address: ''
     });
 
+    const navigate = useNavigate();
+
     const handleClick = (e: React.MouseEvent) => {
         console.log(user);
         AuthorizationService.register(user)
             /*.then(response => {
                 console.log(response.data);
             })*/;
+        navigate('/login');
         setUser({
             id: -1,
             name: '',
@@ -35,7 +39,7 @@ const RegistrationForm = () => {
     };
 
     return (
-        <div>
+        <div style={{margin: "50px 0 0 800px"}}>
             <h1>Registration</h1>
             <form noValidate autoComplete="off">
                 <div>
