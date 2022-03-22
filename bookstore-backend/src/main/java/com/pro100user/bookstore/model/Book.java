@@ -17,7 +17,6 @@ public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
@@ -49,9 +48,9 @@ public class Book implements Serializable {
     private Category category;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = PublishingHouse.class)
-    @JoinColumn(name = "publishing_house_id")
-    private PublishingHouse publishingHouse;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Publishing.class)
+    @JoinColumn(name = "publishing_id")
+    private Publishing publishing;
 
     private String bookSeries;
 
@@ -72,12 +71,6 @@ public class Book implements Serializable {
     @NotEmpty(message = "Publication year cannot be empty")
     private int yearPublication;
 
-    @NotNull
-    @Column(nullable = false)
-    @Max(value = 2022, message = "First edition year cannot be higher than 2022")
-    @NotEmpty(message = "First edition year cannot be empty")
-    private int yearFirstEdition;
-
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Translator.class)
     @JoinColumn(name = "translator_id")
     private Translator translator;
@@ -94,18 +87,8 @@ public class Book implements Serializable {
     @NotNull
     @Column(length = 32, nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Role cannot be empty")
+    @NotEmpty(message = "Type cannot be empty")
     private Type type;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = WorldLiterature.class)
-    @JoinColumn(name = "world_literature_id")
-    private WorldLiterature worldLiterature;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = PeriodLiterature.class)
-    @JoinColumn(name = "period_literature_id")
-    private PeriodLiterature periodLiterature;
 
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")

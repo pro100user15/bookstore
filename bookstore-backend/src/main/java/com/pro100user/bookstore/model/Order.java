@@ -1,5 +1,6 @@
 package com.pro100user.bookstore.model;
 
+import com.pro100user.bookstore.model.enums.Status;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +30,9 @@ public class Order implements Serializable {
     private User user;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Status.class)
-    @JoinColumn(name = "status_id")
+    @Column(length = 32, nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotEmpty(message = "Status cannot be empty")
     private Status status;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -45,7 +47,7 @@ public class Order implements Serializable {
     @Column(nullable = false)
     @Min(value = 0, message = "Price cannot be less than 0")
     @NotEmpty(message = "Price cannot be empty")
-    private double price;
+    private double totalPrice;
 
     @NotNull
     private LocalDate date;

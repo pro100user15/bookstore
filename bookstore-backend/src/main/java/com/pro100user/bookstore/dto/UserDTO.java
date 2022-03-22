@@ -19,5 +19,4 @@ public class UserDTO {
     private String phone;
     private Sex sex;
     private String password;
-    private String address;
 }

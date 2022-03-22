@@ -62,13 +62,12 @@ public class User implements Serializable {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    @NotNull
-    @Size(min = 4, max = 64, message = "Address must be between 4 and 64 characters long")
-    @NotEmpty(message = "Address cannot be empty")
-    private String address;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Address.class)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     /*@CollectionTable(

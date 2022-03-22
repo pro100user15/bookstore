@@ -42,8 +42,8 @@ public class AuthenticationController {
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> registration(@RequestBody UserDTO userDTO) {
         User user = userMapper.ToUser(userDTO);
-        userService.create(user);
-        return ResponseEntity.ok(userDTO);
+        user = userService.create(user);
+        return ResponseEntity.ok(userMapper.ToUserDTO(user));
     }
 
     @PostMapping("/login")
