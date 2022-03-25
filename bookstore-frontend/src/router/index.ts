@@ -6,6 +6,7 @@ import RegistrationForm from "../components/RegistrationForm";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import Category from "../components/Categories/Category/Category";
 import Profile from "../pages/Profile";
+import CategoryDetails from "../components/Categories/CategoryDetails/CategoryDetails";
 
 interface IRote {
     path: string,
@@ -23,33 +24,37 @@ export enum RouteNames {
 const AppRoutes = (): IRote[]  => {
     const roles: Role[] = useTypedSelector<Role[]>(state => state.auth.user.roles);
 
-    const [loading, setLoading] = useState<boolean>(false);
-
     const [routes, setRoutes] = useState<IRote[]>([
         {path: RouteNames.HOME, component: HomePage},
         {path: RouteNames.CATEGORIES, component: Category},
+        {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails},
         {path: RouteNames.LOGIN, component: LoginForm},
         {path: RouteNames.REGISTRATION, component: RegistrationForm},
         {path: RouteNames.PROFILE, component: Profile},
     ]);
 
     useEffect(() => {
-        console.log("111");
-        console.log(roles);
         if(roles && roles.includes(Role.GUEST)) {
-            console.log("222");
             const guestRoutes: IRote[] = [
                 {path: RouteNames.LOGIN, component: LoginForm},
                 {path: RouteNames.REGISTRATION, component: RegistrationForm}
             ];
+
             console.log(guestRoutes);
-            setRoutes(prev => prev.concat(routes));
+            setRoutes(prev => prev = prev.concat(guestRoutes));
             console.log(routes);
         }
 
-        if(loading === false)
-            setLoading(true);
-    }, [roles, loading]);
+        if(roles && roles.includes(Role.MODERATOR)) {
+            const guestRoutes: IRote[] = [
+                {path: RouteNames.CATEGORIES, component: Category}
+            ];
+
+            console.log(guestRoutes);
+            setRoutes(prev => prev = prev.concat(guestRoutes));
+            console.log(routes);
+        }
+    }, [roles]);
 
     return routes;
 }

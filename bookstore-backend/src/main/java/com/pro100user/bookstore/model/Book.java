@@ -1,13 +1,16 @@
 package com.pro100user.bookstore.model;
 
 
+import com.pro100user.bookstore.model.enums.Language;
 import com.pro100user.bookstore.model.enums.Type;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -61,8 +64,9 @@ public class Book implements Serializable {
     private int amount;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Language.class)
-    @JoinColumn(name = "language_id")
+    @Column(length = 32, nullable = false)
+    @Enumerated(EnumType.STRING)
+    @NotEmpty(message = "Language cannot be empty")
     private Language language;
 
     @NotNull
@@ -92,11 +96,11 @@ public class Book implements Serializable {
 
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
-    private List<Basket> baskets;
+    private Set<Basket> baskets;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
-    private List<Order> orders;
+    private Set<Order> orders;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishList")
-    private List<User> users;
+    private Set<User> users;
 }

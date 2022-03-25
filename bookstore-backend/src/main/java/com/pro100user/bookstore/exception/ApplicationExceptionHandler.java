@@ -14,17 +14,12 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ResponseEntity<String> entityNotFoundExceptionHandler(NotFoundException exception) {
-        return getModelAndView(HttpStatus.NOT_FOUND, exception);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> internalServerErrorHandler(Exception exception) {
-        return getModelAndView(HttpStatus.INTERNAL_SERVER_ERROR, exception);
-    }
-
-    private ResponseEntity<String> getModelAndView(HttpStatus httpStatus, Exception exception) {
-        //log.error("Exception raised = {} :: URL = {}", exception.getMessage(), request.getRequestURL());
-        return new ResponseEntity<>(exception.getMessage(), httpStatus);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

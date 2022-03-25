@@ -13,8 +13,7 @@ const RegistrationForm = () => {
         email: '',
         phone: '',
         sex: '',
-        password: '',
-        address: ''
+        password: ''
     });
 
     const navigate = useNavigate();
@@ -33,8 +32,7 @@ const RegistrationForm = () => {
             email: '',
             phone: '',
             sex: '',
-            password: '',
-            address: ''
+            password: ''
         });
     };
 
@@ -98,14 +96,6 @@ const RegistrationForm = () => {
                                variant="standard"
                                value={user.password}
                                onChange={(e) => setUser({...user, password: e.target.value})}
-                    />
-                </div>
-                <div>
-                    <TextField id="standard-basic"
-                               label="Address"
-                               variant="standard"
-                               value={user.address}
-                               onChange={(e) => setUser({...user, address: e.target.value})}
                     />
                 </div>
                 <div>

@@ -33,7 +33,6 @@ public class UserController {
 
     @PutMapping("/profile")
     public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO user) {
-
         return ResponseEntity.ok(userMapper.ToUserDTO(
                 userService.update(userMapper.ToUser(user))
         ));
