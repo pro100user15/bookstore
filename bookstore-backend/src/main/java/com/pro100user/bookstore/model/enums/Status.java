@@ -1,8 +1,8 @@
 package com.pro100user.bookstore.model.enums;
 
 public enum Status {
-    PAPER("Paper"),
-    ELECTRONIC("Electronic");
+    OPEN("Open"),
+    CLOSED("Closed");
 
     private String name;
 

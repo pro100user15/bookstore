@@ -3,20 +3,19 @@ package com.pro100user.bookstore.service.impl;
 import com.pro100user.bookstore.model.Translator;
 import com.pro100user.bookstore.repository.TranslatorRepository;
 import com.pro100user.bookstore.service.TranslatorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TranslatorServiceImpl implements TranslatorService {
 
     private final TranslatorRepository translatorRepository;
-
-    public TranslatorServiceImpl(TranslatorRepository translatorRepository) {
-        this.translatorRepository = translatorRepository;
-    }
 
     @Override
     public Translator create(Translator object) {

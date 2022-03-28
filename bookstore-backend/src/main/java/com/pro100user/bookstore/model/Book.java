@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -23,8 +25,8 @@ public class Book implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
-    @Column(length = 32, nullable = false)
+    @Size(min = 2, max = 64, message = "Name must be between 2 and 64 characters long")
+    @Column(length = 64, nullable = false)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
@@ -34,7 +36,7 @@ public class Book implements Serializable {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
-    private List<Author> authors;
+    private Set<Author> authors;
 
     @NotNull
     @Column(nullable = false)
@@ -71,7 +73,7 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    @Max(value = 2022, message = "Publication year cannot be higher than 2022")
+    //@PastOrPresent(message = "Publication year cannot be higher than the current year")
     @NotEmpty(message = "Publication year cannot be empty")
     private int yearPublication;
 
@@ -95,12 +97,12 @@ public class Book implements Serializable {
     private Type type;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     private Set<Basket> baskets;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "books")
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishList")
+    @ManyToMany(mappedBy = "wishList", fetch = FetchType.LAZY)
     private Set<User> users;
 }

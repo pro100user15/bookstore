@@ -3,20 +3,19 @@ package com.pro100user.bookstore.service.impl;
 import com.pro100user.bookstore.model.Book;
 import com.pro100user.bookstore.repository.BookRepository;
 import com.pro100user.bookstore.service.BookService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     @Override
     public Book create(Book object) {
@@ -46,8 +45,9 @@ public class BookServiceImpl implements BookService {
         return bookRepository.getAll();
     }
 
-    /*@Override
+    @Transactional(readOnly = true)
+    @Override
     public List<Book> getListBookByCategoryName(String name) {
-        return bookRepository.;
-    }*/
+        return bookRepository.getListBookByCategoryName(name);
+    }
 }

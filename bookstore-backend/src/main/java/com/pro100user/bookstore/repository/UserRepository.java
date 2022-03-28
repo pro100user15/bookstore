@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface UserRepository extends BasicRepository<User, Long> {
 
-    User findByLogin(String login);
+    User findByEmail(String email);
 }

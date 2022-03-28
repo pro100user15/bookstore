@@ -3,20 +3,19 @@ package com.pro100user.bookstore.service.impl;
 import com.pro100user.bookstore.model.Basket;
 import com.pro100user.bookstore.repository.BasketRepository;
 import com.pro100user.bookstore.service.BasketService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BasketServiceImpl implements BasketService {
 
     private final BasketRepository basketRepository;
-
-    public BasketServiceImpl(BasketRepository basketRepository) {
-        this.basketRepository = basketRepository;
-    }
 
     @Override
     public Basket create(Basket object) {

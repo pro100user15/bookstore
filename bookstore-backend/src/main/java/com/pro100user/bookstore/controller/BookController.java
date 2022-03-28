@@ -1,12 +1,11 @@
 package com.pro100user.bookstore.controller;
 
-/*@Slf4j
-@RestController
-@RequestMapping("books")*/
-public class BookController {
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-    /*@GetMapping
-    public String books() {
-        return "index";
-    }*/
+@Slf4j
+@RestController
+@RequestMapping("books")
+public class BookController {
 }

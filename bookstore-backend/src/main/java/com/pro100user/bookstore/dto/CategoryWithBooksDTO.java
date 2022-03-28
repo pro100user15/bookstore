@@ -1,5 +1,6 @@
 package com.pro100user.bookstore.dto;
 
+import com.pro100user.bookstore.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +14,12 @@ public class CategoryWithBooksDTO {
     private int countBooks;
 
     public CategoryWithBooksDTO() {
+    }
+
+    public CategoryWithBooksDTO(Category category, int countBooks) {
+        this.id = category.getId();
+        this.name = category.getName();
+        this.countBooks = countBooks;
     }
 
     public CategoryWithBooksDTO(Long id, String name, int countBooks) {

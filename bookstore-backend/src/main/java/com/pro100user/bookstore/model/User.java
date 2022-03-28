@@ -6,39 +6,40 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2, max = 35, message = "Name must be between 2 and 35 characters long")
-    @Column(length = 35)
+    @Size(min = 2, max = 64, message = "Name must be between 2 and 64 characters long")
+    @Column(length = 64)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @Size(min = 2, max = 35, message = "Surname must be between 2 and 35 characters long")
-    @Column(length = 35)
+    @Size(min = 2, max = 64, message = "Surname must be between 2 and 64 characters long")
+    @Column(length = 64)
     @NotEmpty(message = "Surname cannot be empty")
     private String surname;
 
     @NotNull
     @Email(message = "Email must match format")
-    @Size(min = 5, max = 40, message = "Email must be between 5 and 40 characters long")
-    @Column(unique = true, length = 40, nullable = false)
+    @Size(min = 3, max = 320, message = "Email must be between 3 and 320 characters long")
+    @Column(unique = true, length = 320, nullable = false)
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
@@ -62,6 +63,8 @@ public class User implements Serializable {
     private Address address;
 
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    @Setter(value = AccessLevel.PRIVATE)
     private LocalDateTime createdAt;
 
     //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -87,12 +90,11 @@ public class User implements Serializable {
     private Role role = Role.ROLE_USER;
 
 
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Basket basket;
 
     @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+    private Set<Order> orders;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -100,7 +102,7 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private List<Book> wishList;
+    private Set<Book> wishList;
 }
 
 

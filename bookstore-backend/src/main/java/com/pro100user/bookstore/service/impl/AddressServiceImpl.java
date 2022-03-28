@@ -3,20 +3,19 @@ package com.pro100user.bookstore.service.impl;
 import com.pro100user.bookstore.model.Address;
 import com.pro100user.bookstore.repository.AddressRepository;
 import com.pro100user.bookstore.service.AddressService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
-
-    public AddressServiceImpl(AddressRepository addressRepository) {
-        this.addressRepository = addressRepository;
-    }
 
     @Override
     public Address create(Address object) {

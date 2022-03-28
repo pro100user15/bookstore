@@ -66,7 +66,7 @@ const useInput = (initialValue: string, validations: []) => {
     };
 }*/
 
-const LoginForm: React.FC = () => {
+const LoginForms: React.FC = () => {
     //const email = useInput('', []/*{isEmpty: true, minLength: 5, maxLength: 40, isValid: false}*/);
     //const password = useInput('', []/*{isEmpty: true, minLength: 8, maxLength: 64}*/);
 
@@ -130,7 +130,7 @@ const LoginForm: React.FC = () => {
                                    value={user?.password}
                                    onChange={e => setUser({...user, password: e.target.value})}
                             /*onBlur={password.onBlur}*/
-                        />
+                        >
                     </div>
                     <div>
                         <Button variant="contained" color="success" onClick={handleClick}>
@@ -143,4 +143,4 @@ const LoginForm: React.FC = () => {
     );
 };
 
-export default LoginForm;
+export default LoginForms;

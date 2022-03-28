@@ -20,11 +20,11 @@ public class UserRepositoryImpl extends BasicRepositoryImpl<User, Long> implemen
     }
 
     @Override
-    public User findByLogin(String login) {
+    public User findByEmail(String email) {
         User user = sessionFactory.getCurrentSession().createQuery(findUserByLogin, User.class)
-                .setParameter("login", login).getSingleResult();
+                .setParameter("login", email).getSingleResult();
         if(user == null) {
-            throw new NotFoundException("User with login " + login + " is not found");
+            throw new NotFoundException("User with email " + email + " is not found");
         }
         return user;
     }

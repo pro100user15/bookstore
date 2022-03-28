@@ -4,22 +4,21 @@ import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
 import com.pro100user.bookstore.model.Category;
 import com.pro100user.bookstore.repository.CategoryRepository;
 import com.pro100user.bookstore.service.CategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     @Override
     public Category create(Category object) {
@@ -55,20 +54,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByName(name);
     }
 
-    /*@Transactional(readOnly = true)
-    @Override
-    public List<Book> getListBookByCategoryName(String name) {
-        return categoryRepository.getListBookByCategoryName(name);
-    }*/
-
     @Transactional(readOnly = true)
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
-        List<CategoryWithBooksDTO> list = new ArrayList<>();
-        for(Category category : getAll()) {
-            list.add(new CategoryWithBooksDTO(category.getId(),
-                    category.getName(),
-                    categoryRepository.getBookSizeByCategoryName(category.getId())));
-        }
-        return list;
+        return getAll().stream().map(category ->
+                new CategoryWithBooksDTO(category,
+                        categoryRepository.getBookSizeByCategoryName(category.getId())))
+                .collect(Collectors.toList());
     }
 }
