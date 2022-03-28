@@ -10,7 +10,6 @@
 
 # Checklist
 - [ ] Tests
-- [ ] Translations
 - [ ] Documentation
 
 # Screenshots
