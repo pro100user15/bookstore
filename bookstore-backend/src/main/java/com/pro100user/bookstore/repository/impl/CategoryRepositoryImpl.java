@@ -2,10 +2,8 @@ package com.pro100user.bookstore.repository.impl;
 
 import com.pro100user.bookstore.model.Book;
 import com.pro100user.bookstore.model.Category;
-import com.pro100user.bookstore.model.model.CategoryModel;
 import com.pro100user.bookstore.repository.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +14,9 @@ import java.util.List;
 public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> implements CategoryRepository {
 
     private String SELECT_BY_NAME = "FROM Category WHERE name like :name";
+    private String SELECT_COUNT_BOOKS = "SELECT books.size FROM Category WHERE id=:id";
     private String SELECT_BOOKS_BY_CATEGORY_NAME = "FROM Category.books WHERE Category.name like :name";
-    private String SELECT_CATEGORY_WITH_COUNT_BOOKS = "SELECT new com.pro100user.bookstore.entity.model.CategoryModel(id, name, books.size) from Category";
+    //private String SELECT_CATEGORY_WITH_COUNT_BOOKS = "SELECT new com.pro100user.bookstore.entity.model.CategoryModel(id, name, books.size) from Category";
 
     public CategoryRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -35,11 +34,16 @@ public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> 
                         .setParameter("name", name).getResultList();
     }
 
-    @Override
+    public Integer getBookSizeByCategoryName(Long id) {
+        return (Integer) sessionFactory.getCurrentSession().createQuery(SELECT_COUNT_BOOKS)
+                .setParameter("id", id).getSingleResult();
+    }
+
+    /*@Override
     public List<CategoryModel> getCategoryModels() {
         return sessionFactory.getCurrentSession()
                 .createQuery("SELECT new com.pro100user.bookstore.model.model.CategoryModel(id, name, books.size) from Category", CategoryModel.class)
                 //.createQuery("SELECT id, name, books.size as countBooks from Category", CategoryModel.class)
                 .getResultList();
-    }
+    }*/
 }

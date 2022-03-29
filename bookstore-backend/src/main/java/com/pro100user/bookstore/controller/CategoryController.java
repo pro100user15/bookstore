@@ -2,7 +2,6 @@ package com.pro100user.bookstore.controller;
 
 import com.pro100user.bookstore.dto.CategoryDTO;
 import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
-import com.pro100user.bookstore.model.model.CategoryModel;
 import com.pro100user.bookstore.mapper.CategoryMapper;
 import com.pro100user.bookstore.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +32,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryModel>> categories() {
+    public ResponseEntity<List<CategoryWithBooksDTO>> categories() {
         return new ResponseEntity<>(
-                categoryService.CategoryWithBooksDTO(),
+                categoryService.getCategoriesWithCountBooks(),
                 //categoryMapper.toCategoryWithBooksDTOList(categoryService.getAll()),
                 HttpStatus.OK
         );

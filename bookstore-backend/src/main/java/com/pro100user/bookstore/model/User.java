@@ -3,6 +3,7 @@ package com.pro100user.bookstore.model;
 import com.pro100user.bookstore.model.enums.Role;
 import com.pro100user.bookstore.model.enums.Sex;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -22,18 +23,15 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotNull
     @Size(min = 2, max = 35, message = "Name must be between 2 and 35 characters long")
-    @Column(length = 35, nullable = false)
+    @Column(length = 35)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @NotNull
     @Size(min = 2, max = 35, message = "Surname must be between 2 and 35 characters long")
-    @Column(length = 35, nullable = false)
+    @Column(length = 35)
     @NotEmpty(message = "Surname cannot be empty")
     private String surname;
 
@@ -44,14 +42,11 @@ public class User implements Serializable {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    @NotNull
-    @Pattern(regexp = "^(\\+?380)(\\d{9})$", message = "Phone must match format - +380972553991")
-    @Column(unique = true, length = 13, nullable = false)
+    @Column(unique = true, length = 20)
     @NotEmpty(message = "Phone cannot be empty")
     private String phone;
 
-    @NotNull
-    @Column(length = 32, nullable = false, columnDefinition = "varchar(32) default 'NO'")
+    @Column(length = 32, columnDefinition = "varchar(32) default 'NO'")
     @Enumerated(EnumType.STRING)
     @NotEmpty(message = "Sex cannot be empty")
     private Sex sex = Sex.NO;
@@ -62,13 +57,12 @@ public class User implements Serializable {
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
-    @NotNull
-    @Size(min = 4, max = 64, message = "Address must be between 4 and 64 characters long")
-    @NotEmpty(message = "Address cannot be empty")
-    private String address;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Address.class)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @NotNull
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     /*@CollectionTable(
@@ -92,7 +86,9 @@ public class User implements Serializable {
     @NotEmpty(message = "Role cannot be empty")
     private Role role = Role.ROLE_USER;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
     private Basket basket;
 
     @OneToMany(mappedBy = "user")

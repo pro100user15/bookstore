@@ -49,10 +49,6 @@ const Profile = () => {
                         <td>Female</td>
                     }
                 </tr>
-                <tr>
-                    <td>Address :</td>
-                    <td>{user.address}</td>
-                </tr>
                 </tbody>
             </table>
         </div>

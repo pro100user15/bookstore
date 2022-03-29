@@ -7,8 +7,7 @@ export interface User {
     email: string,
     phone: string,
     sex: string,
-    password: string,
-    address: string
+    password: string
 }
 
 export interface UserLogin {

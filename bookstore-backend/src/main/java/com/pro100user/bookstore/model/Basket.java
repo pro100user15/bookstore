@@ -39,5 +39,5 @@ public class Basket implements Serializable {
     @Column(nullable = false)
     @Min(value = 0, message = "Price cannot be less than 0")
     @NotEmpty(message = "Price cannot be empty")
-    private double price;
+    private double totalPrice;
 }

@@ -1,9 +1,11 @@
 package com.pro100user.bookstore.repository.impl;
 
+import com.pro100user.bookstore.exception.NotFoundException;
 import com.pro100user.bookstore.model.User;
 import com.pro100user.bookstore.repository.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,8 +21,11 @@ public class UserRepositoryImpl extends BasicRepositoryImpl<User, Long> implemen
 
     @Override
     public User findByLogin(String login) {
-        List<User> users = sessionFactory.getCurrentSession().createQuery(findUserByLogin, User.class)
-                .setParameter("login", login).getResultList();
-        return users.isEmpty() ? null : users.get(0);
+        User user = sessionFactory.getCurrentSession().createQuery(findUserByLogin, User.class)
+                .setParameter("login", login).getSingleResult();
+        if(user == null) {
+            throw new NotFoundException("User with login " + login + " is not found");
+        }
+        return user;
     }
 }
