@@ -4,7 +4,9 @@ import com.pro100user.bookstore.dto.CategoryDTO;
 import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
 import com.pro100user.bookstore.mapper.CategoryMapper;
 import com.pro100user.bookstore.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,24 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-//@CrossOrigin(origins = "http://localhost:3000")
-//@CrossOrigin(origins = "*", maxAge = 5000)
-//@CrossOrigin(origins = "*")
-//@CrossOrigin(maxAge = 5000)
-@CrossOrigin
 @RestController
 @RequestMapping("categories")
-//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CategoryController {
 
-    private CategoryService categoryService;
-    private CategoryMapper categoryMapper;
-
-    public CategoryController(CategoryService categoryService,
-                              CategoryMapper categoryMapper) {
-        this.categoryService = categoryService;
-        this.categoryMapper = categoryMapper;
-    }
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping
     public ResponseEntity<List<CategoryWithBooksDTO>> categories() {

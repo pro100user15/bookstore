@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class MainController {
 
-    public MainController() {
-        System.out.println("======================================");
-    }
-
     @GetMapping
     public String home() {
         return "Hello, pro100user!";

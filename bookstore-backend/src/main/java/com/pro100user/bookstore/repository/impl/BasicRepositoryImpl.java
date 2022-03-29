@@ -14,8 +14,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Slf4j
-@Repository
-@Transactional
 public abstract class BasicRepositoryImpl<T extends Serializable, I extends Serializable> implements BasicRepository<T, I> {
 
     protected final SessionFactory sessionFactory;

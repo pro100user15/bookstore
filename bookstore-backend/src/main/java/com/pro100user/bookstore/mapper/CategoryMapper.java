@@ -13,10 +13,10 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper {
 
-    @Named("countBooks")
+    /*@Named("countBooks")
     static double countBooks(List<Book> books) {
         return books == null ? 0 : books.size();
-    }
+    }*/
 
     Category toCategory(CategoryDTO categoryDTO);
 
@@ -24,9 +24,9 @@ public interface CategoryMapper {
 
     List<CategoryDTO> toCategoryDTOList(List<Category> categories);
 
-    @Mapping(source = "books", target = "countBooks", qualifiedByName = "countBooks")
+    //@Mapping(source = "books", target = "countBooks", qualifiedByName = "countBooks")
     CategoryWithBooksDTO toCategoryWithBooksDTO(Category category);
 
-    @Mapping(source = "books", target = "countBooks", qualifiedByName = "countBooks")
+    //@Mapping(source = "books", target = "countBooks", qualifiedByName = "countBooks")
     List<CategoryWithBooksDTO> toCategoryWithBooksDTOList(List<Category> categories);
 }

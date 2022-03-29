@@ -15,7 +15,6 @@ public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> 
 
     private String SELECT_BY_NAME = "FROM Category WHERE name like :name";
     private String SELECT_COUNT_BOOKS = "SELECT books.size FROM Category WHERE id=:id";
-    private String SELECT_BOOKS_BY_CATEGORY_NAME = "FROM Category.books WHERE Category.name like :name";
     //private String SELECT_CATEGORY_WITH_COUNT_BOOKS = "SELECT new com.pro100user.bookstore.entity.model.CategoryModel(id, name, books.size) from Category";
 
     public CategoryRepositoryImpl(SessionFactory sessionFactory) {
@@ -28,14 +27,8 @@ public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> 
                 .setParameter("name", name).getResultList();
     }
 
-    @Override
-    public List<Book> getListBookByCategoryName(String name) {
-        return sessionFactory.getCurrentSession().createQuery(SELECT_BOOKS_BY_CATEGORY_NAME, Book.class)
-                        .setParameter("name", name).getResultList();
-    }
-
-    public Integer getBookSizeByCategoryName(Long id) {
-        return (Integer) sessionFactory.getCurrentSession().createQuery(SELECT_COUNT_BOOKS)
+    public int getBookSizeByCategoryName(Long id) {
+        return (int) sessionFactory.getCurrentSession().createQuery(SELECT_COUNT_BOOKS)
                 .setParameter("id", id).getSingleResult();
     }
 

@@ -3,20 +3,19 @@ package com.pro100user.bookstore.service.impl;
 import com.pro100user.bookstore.model.Publishing;
 import com.pro100user.bookstore.repository.PublishingRepository;
 import com.pro100user.bookstore.service.PublishingService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PublishingServiceImpl implements PublishingService {
 
     private final PublishingRepository publishingRepository;
-
-    public PublishingServiceImpl(PublishingRepository publishingRepository) {
-        this.publishingRepository = publishingRepository;
-    }
 
     @Override
     public Publishing create(Publishing object) {

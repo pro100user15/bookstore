@@ -4,6 +4,7 @@ import com.pro100user.bookstore.model.enums.Status;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +22,6 @@ public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
@@ -41,7 +41,7 @@ public class Order implements Serializable {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private List<Book> books;
+    private Set<Book> books;
 
     @NotNull
     @Column(nullable = false)
@@ -49,6 +49,8 @@ public class Order implements Serializable {
     @NotEmpty(message = "Price cannot be empty")
     private double totalPrice;
 
-    @NotNull
-    private LocalDate date;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    @Setter(value = AccessLevel.PRIVATE)
+    private LocalDate createdAt;
 }

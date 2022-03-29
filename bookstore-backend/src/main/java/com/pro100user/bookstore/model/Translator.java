@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,17 +23,18 @@ public class Translator implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 35, message = "Name must be between 2 and 35 characters long")
-    @Column(length = 35, nullable = false)
+    @Size(min = 2, max = 64, message = "Name must be between 2 and 64 characters long")
+    @Column(length = 64, nullable = false)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
     @NotNull
-    @Size(min = 2, max = 35, message = "Surname must be between 2 and 35 characters long")
-    @Column(length = 35, nullable = false)
+    @Size(min = 2, max = 64, message = "Surname must be between 2 and 64 characters long")
+    @Column(length = 64, nullable = false)
     @NotEmpty(message = "Surname cannot be empty")
     private String surname;
 
+
     @OneToMany(mappedBy = "translator")
-    private List<Book> books;
+    private Set<Book> books;
 }
