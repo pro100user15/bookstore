@@ -43,7 +43,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({setModalEdit}) => {
             {
                 category &&
                 <form noValidate autoComplete="off">
-                    <h4>{category.id} - {category.name}</h4>
+                    <h4>Редагування категорії</h4>
                     <TextField id="standard-basic" label="Category Name" variant="standard"
                                value={category.name}
                                onChange={(e) =>

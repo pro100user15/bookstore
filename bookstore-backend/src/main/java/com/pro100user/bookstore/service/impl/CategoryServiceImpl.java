@@ -1,6 +1,8 @@
 package com.pro100user.bookstore.service.impl;
 
+import com.pro100user.bookstore.dto.CategoryDTO;
 import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
+import com.pro100user.bookstore.mapper.CategoryMapper;
 import com.pro100user.bookstore.model.Category;
 import com.pro100user.bookstore.repository.CategoryRepository;
 import com.pro100user.bookstore.service.CategoryService;
@@ -14,32 +16,43 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Transactional
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
-    public Category create(Category object) {
-        return categoryRepository.create(object);
+    public CategoryWithBooksDTO create(CategoryDTO category) {
+        return categoryMapper.toCategoryWithBooksDTO(
+                categoryRepository.create(
+                        categoryMapper.toCategory(category)
+                ));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Category readById(Long id) {
-        return categoryRepository.readById(id);
+    public CategoryWithBooksDTO readById(Long id) {
+        return categoryMapper.toCategoryWithBooksDTO(
+                categoryRepository.readById(id)
+        );
     }
 
     @Override
-    public Category update(Category object) {
-        readById(object.getId());
-        return categoryRepository.update(object);
+    public CategoryWithBooksDTO update(CategoryDTO category) {
+        return categoryMapper.toCategoryWithBooksDTO(
+                categoryRepository.update(
+                        categoryMapper.toCategory(category)
+                ));
     }
 
     @Override
-    public Category delete(Category object) {
-        return categoryRepository.delete(object);
+    public CategoryWithBooksDTO delete(Long id) {
+        Category category = categoryRepository.readById(id);
+        return categoryMapper.toCategoryWithBooksDTO(
+                categoryRepository.delete(category)
+        );
     }
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -50,11 +63,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Category> findByName(String name) {
+    public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
                 new CategoryWithBooksDTO(category,

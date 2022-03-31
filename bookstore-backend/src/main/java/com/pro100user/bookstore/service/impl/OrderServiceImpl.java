@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -30,13 +30,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order object) {
-        readById(object.getId());
         return orderRepository.update(object);
     }
 
     @Override
-    public Order delete(Order object) {
-        return orderRepository.delete(object);
+    public Order delete(Long id) {
+        Order order = readById(id);
+        return orderRepository.delete(order);
     }
 
     @Transactional(readOnly = true)

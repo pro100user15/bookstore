@@ -50,7 +50,7 @@ public class Order implements Serializable {
     private double totalPrice;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @Setter(value = AccessLevel.PRIVATE)
     private LocalDate createdAt;
 }

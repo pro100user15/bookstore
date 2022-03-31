@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CategoryRepository extends BasicRepository<Category, Long> {
 
-    List<Category> findByName(String name);
+    Category findByName(String name);
     int getBookSizeByCategoryName(Long id);
 }

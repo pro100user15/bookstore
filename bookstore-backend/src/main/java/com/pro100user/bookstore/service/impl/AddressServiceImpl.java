@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
@@ -30,13 +30,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address update(Address object) {
-        readById(object.getId());
         return addressRepository.update(object);
     }
 
     @Override
-    public Address delete(Address object) {
-        return addressRepository.delete(object);
+    public Address delete(Long id) {
+        Address address = readById(id);
+        return addressRepository.delete(address);
     }
 
     @Transactional(readOnly = true)

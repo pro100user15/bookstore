@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -30,13 +30,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book update(Book object) {
-        readById(object.getId());
         return bookRepository.update(object);
     }
 
     @Override
-    public Book delete(Book object) {
-        return bookRepository.delete(object);
+    public Book delete(Long id) {
+        Book book = readById(id);
+        return bookRepository.delete(book);
     }
 
     @Transactional(readOnly = true)

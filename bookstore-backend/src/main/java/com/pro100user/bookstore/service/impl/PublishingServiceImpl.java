@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class PublishingServiceImpl implements PublishingService {
 
     private final PublishingRepository publishingRepository;
@@ -30,13 +30,13 @@ public class PublishingServiceImpl implements PublishingService {
 
     @Override
     public Publishing update(Publishing object) {
-        readById(object.getId());
         return publishingRepository.update(object);
     }
 
     @Override
-    public Publishing delete(Publishing object) {
-        return publishingRepository.delete(object);
+    public Publishing delete(Long id) {
+        Publishing publishing = readById(id);
+        return publishingRepository.delete(publishing);
     }
 
     @Transactional(readOnly = true)

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -30,13 +30,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author update(Author object) {
-        readById(object.getId());
         return authorRepository.update(object);
     }
 
     @Override
-    public Author delete(Author object) {
-        return authorRepository.delete(object);
+    public Author delete(Long id) {
+        Author author = readById(id);
+        return authorRepository.delete(author);
     }
 
     @Transactional(readOnly = true)

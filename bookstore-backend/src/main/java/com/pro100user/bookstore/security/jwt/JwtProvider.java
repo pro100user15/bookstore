@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 
-    @Value("$(jwt.token.secret)")
+    @Value("${jwt.token.secret}")
     private String jwtSecret;
 
     public String generateToken(CustomUserDetails user) {
@@ -34,10 +34,11 @@ public class JwtProvider {
                 .atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getUsername());
+        claims.put("email", user.getEmail());
         claims.put("roles", user.getAuthorities().stream()
                 .map(grantedAuthority -> grantedAuthority.getAuthority())
                 .collect(Collectors.toList()));
+        claims.put("enabled", user.isEnabled());
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(date)
@@ -50,7 +51,7 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            throw new JwtAuthenticationException("Jwt is valid!");
+            throw new JwtAuthenticationException("Jwt is not valid!");
         }
     }
 

@@ -7,6 +7,13 @@ import {AuthActionEnum, IAuthState} from "./store/actions/auth";
 import jwt from "jwt-decode";
 import {useTypedSelector} from "./hooks/useTypedSelector";
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import {Container, CssBaseline} from "@mui/material";
+
+
 const App: FC = () => {
 
     const token: string = useTypedSelector<string>(state => state.auth.token);
@@ -30,8 +37,11 @@ const App: FC = () => {
 
     return (
         <>
+            <CssBaseline />
             <Header/>
-            <AppRouter/>
+            {/*<Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>*/}
+                <AppRouter/>
+            {/*</Container>*/}
         </>
     );
 }

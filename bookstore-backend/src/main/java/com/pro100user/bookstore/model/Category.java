@@ -27,6 +27,6 @@ public class Category implements Serializable {
     private String name;
 
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Set<Book> books;
 }

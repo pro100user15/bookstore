@@ -130,7 +130,7 @@ const LoginForms: React.FC = () => {
                                    value={user?.password}
                                    onChange={e => setUser({...user, password: e.target.value})}
                             /*onBlur={password.onBlur}*/
-                        >
+                        />
                     </div>
                     <div>
                         <Button variant="contained" color="success" onClick={handleClick}>

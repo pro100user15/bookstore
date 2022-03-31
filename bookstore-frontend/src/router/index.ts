@@ -1,16 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {Role} from "../models/Authority";
 import HomePage from "../pages/HomePage";
-import LoginForm from "../components/LoginForm";
-import RegistrationForm from "../components/RegistrationForm";
+import RegistrationForms from "../components/RegistrationForms";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import Category from "../components/Categories/Category/Category";
 import Profile from "../pages/Profile";
 import CategoryDetails from "../components/Categories/CategoryDetails/CategoryDetails";
+import ProfileEdit from "../pages/ProfileEdit";
+import AuthorizationPage from "../pages/AuthorizationPage/AuthorizationPage";
+
+interface IAuthorize {
+    isLogin?: boolean
+}
 
 interface IRote {
     path: string,
-    component: React.FC
+    component: React.FC<IAuthorize>,
+    flag?: boolean
 }
 
 export enum RouteNames {
@@ -19,25 +25,25 @@ export enum RouteNames {
     REGISTRATION = '/registration',
     CATEGORIES = '/categories',
     PROFILE = '/profile',
+    PROFILE_EDIT = '/profile-edit',
 }
 
 const AppRoutes = (): IRote[]  => {
     const roles: Role[] = useTypedSelector<Role[]>(state => state.auth.user.roles);
 
-    const [routes, setRoutes] = useState<IRote[]>([
-        {path: RouteNames.HOME, component: HomePage},
-        {path: RouteNames.CATEGORIES, component: Category},
-        {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails},
-        {path: RouteNames.LOGIN, component: LoginForm},
-        {path: RouteNames.REGISTRATION, component: RegistrationForm},
-        {path: RouteNames.PROFILE, component: Profile},
-    ]);
+    const [routes, setRoutes] = useState<IRote[]>([]);
 
     useEffect(() => {
+        setRoutes([
+            {path: RouteNames.HOME, component: HomePage},
+            {path: RouteNames.CATEGORIES, component: Category},
+            {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails}
+        ]);
+
         if(roles && roles.includes(Role.GUEST)) {
             const guestRoutes: IRote[] = [
-                {path: RouteNames.LOGIN, component: LoginForm},
-                {path: RouteNames.REGISTRATION, component: RegistrationForm}
+                {path: RouteNames.LOGIN, component: AuthorizationPage, flag: true},
+                {path: RouteNames.REGISTRATION, component: AuthorizationPage, flag: false}
             ];
 
             console.log(guestRoutes);
@@ -45,13 +51,14 @@ const AppRoutes = (): IRote[]  => {
             console.log(routes);
         }
 
-        if(roles && roles.includes(Role.MODERATOR)) {
-            const guestRoutes: IRote[] = [
-                {path: RouteNames.CATEGORIES, component: Category}
+        if(roles && roles.includes(Role.USER)) {
+            const userRoutes: IRote[] = [
+                {path: RouteNames.PROFILE, component: Profile},
+                {path: RouteNames.PROFILE_EDIT, component: ProfileEdit}
             ];
 
-            console.log(guestRoutes);
-            setRoutes(prev => prev = prev.concat(guestRoutes));
+            console.log(userRoutes);
+            setRoutes(prev => prev = prev.concat(userRoutes));
             console.log(routes);
         }
     }, [roles]);

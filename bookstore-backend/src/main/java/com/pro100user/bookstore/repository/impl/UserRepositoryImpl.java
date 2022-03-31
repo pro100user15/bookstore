@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl extends BasicRepositoryImpl<User, Long> implements UserRepository {
 
-    private String findUserByLogin = "FROM User WHERE email=:login";
+    private final String findUserByEmail = "FROM User WHERE email=:email";
 
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -21,8 +21,8 @@ public class UserRepositoryImpl extends BasicRepositoryImpl<User, Long> implemen
 
     @Override
     public User findByEmail(String email) {
-        User user = sessionFactory.getCurrentSession().createQuery(findUserByLogin, User.class)
-                .setParameter("login", email).getSingleResult();
+        User user = sessionFactory.getCurrentSession().createQuery(findUserByEmail, User.class)
+                .setParameter("email", email).getSingleResult();
         if(user == null) {
             throw new NotFoundException("User with email " + email + " is not found");
         }

@@ -11,7 +11,7 @@ public interface BasicService <T extends Serializable, I extends Serializable> {
 
     T update(T object);
 
-    T delete(T object);
+    T delete(I id);
 
     List<T> getAll();
 }

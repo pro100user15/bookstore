@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class BasketServiceImpl implements BasketService {
 
     private final BasketRepository basketRepository;
@@ -30,13 +30,13 @@ public class BasketServiceImpl implements BasketService {
 
     @Override
     public Basket update(Basket object) {
-        readById(object.getId());
         return basketRepository.update(object);
     }
 
     @Override
-    public Basket delete(Basket object) {
-        return basketRepository.delete(object);
+    public Basket delete(Long id) {
+        Basket basket = readById(id);
+        return basketRepository.delete(basket);
     }
 
     @Transactional(readOnly = true)

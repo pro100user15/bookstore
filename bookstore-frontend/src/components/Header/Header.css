@@ -1,28 +1,4 @@
-header {
-    height: 40px;
-    background-color: cyan;
-    color: black;
-    text-align: left;
-}
-
-nav {
-    margin-left: 100px;
-    display: flex;
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-    margin-left: 10px;
-    text-decoration: none;
-}
-
 .link {
-    font-size: 18px;
-    margin-left: 10px;
+    margin: 10px;
     text-decoration: none;
-}
-
-.login {
-    margin-left: 600px;
 }

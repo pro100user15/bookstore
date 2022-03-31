@@ -1,7 +1,5 @@
 import React, {FC} from 'react';
 import {Link} from "react-router-dom";
-import MyButton from "../../UI/button/MyButton";
-
 import classes from './CategoryItem.module.css';
 import {CategoryWithCountBooks} from "../../../models/Category";
 import CategoryService from "../../../services/CategoryService";
@@ -12,6 +10,7 @@ import {
     SetEditCategoryAction,
     UpdateCategoryAction
 } from "../../../store/actions/category";
+import {Button} from "@mui/material";
 
 interface CategoryItemProps {
     index: number,
@@ -49,8 +48,8 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                 <h2>Amount books : {category.countBooks}</h2>
             </div>
             <div>
-                <MyButton onClick={edit} style={{marginRight: '5px'}}>Редагувати</MyButton>
-                <MyButton onClick={remove}>Видалити</MyButton>
+                <Button variant="outlined" onClick={edit} style={{marginRight: '5px'}}>Edit</Button>
+                <Button variant="outlined" onClick={remove}>Delete</Button>
             </div>
         </div>
     );

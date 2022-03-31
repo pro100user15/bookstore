@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -67,33 +68,23 @@ public class User implements Serializable {
     @Setter(value = AccessLevel.PRIVATE)
     private LocalDateTime createdAt;
 
-    //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    /*@CollectionTable(
-           name = "user_roles"//,
-            //joinColumns = @JoinColumn(name = "user_id")
-    )*/
-    //@Column(name = "role", length = 32, nullable = false)
-    //@Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private boolean enabled = true;
 
-    /*@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")*/
-
-    @NotNull
-    @Column(length = 32, nullable = false, columnDefinition = "varchar(32) default 'ROLE_USER'")
-    @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Role cannot be empty")
-    private Role role = Role.ROLE_USER;
+    @Column(name = "role")
+    private Set<Role> roles = new HashSet<>();
 
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Basket basket;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Order> orders;
 
     @ManyToMany(fetch = FetchType.LAZY)

@@ -1,6 +1,6 @@
-import React from 'react';
+import {FC} from 'react';
 
-const CategoriesPage: React.FC = () => {
+const CategoriesPage: FC = () => {
     return (
         <div>
 

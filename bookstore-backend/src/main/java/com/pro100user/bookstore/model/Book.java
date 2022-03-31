@@ -73,7 +73,6 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    //@PastOrPresent(message = "Publication year cannot be higher than the current year")
     @NotEmpty(message = "Publication year cannot be empty")
     private int yearPublication;
 
