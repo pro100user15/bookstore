@@ -1,5 +1,9 @@
 package com.pro100user.bookstore.service.impl;
 
+import com.pro100user.bookstore.dto.BookCreateDTO;
+import com.pro100user.bookstore.dto.BookDetailsDTO;
+import com.pro100user.bookstore.dto.BookListDTO;
+import com.pro100user.bookstore.mapper.BookMapper;
 import com.pro100user.bookstore.model.Book;
 import com.pro100user.bookstore.repository.BookRepository;
 import com.pro100user.bookstore.service.BookService;
@@ -16,33 +20,47 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     @Override
-    public Book create(Book object) {
-        return bookRepository.create(object);
+    public BookListDTO create(BookCreateDTO dto) {
+        return bookMapper.toBookListDTO(
+                bookRepository.create(
+                        bookMapper.toBook(dto)
+                )
+        );
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Book readById(Long id) {
-        return bookRepository.readById(id);
+    public BookDetailsDTO readById(Long id) {
+        return bookMapper.toBookDetailsDTO(
+                bookRepository.readById(id)
+        );
     }
 
     @Override
-    public Book update(Book object) {
-        return bookRepository.update(object);
+    public BookListDTO update(BookCreateDTO dto) {
+        return bookMapper.toBookListDTO(
+                bookRepository.update(
+                        bookMapper.toBook(dto)
+                )
+        );
     }
 
     @Override
-    public Book delete(Long id) {
-        Book book = readById(id);
-        return bookRepository.delete(book);
+    public BookDetailsDTO delete(Long id) {
+        return bookMapper.toBookDetailsDTO(
+                bookRepository.delete(bookRepository.readById(id))
+        );
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Book> getAll() {
-        return bookRepository.getAll();
+    public List<BookListDTO> getAll() {
+        return bookMapper.toBookListDTO(
+                bookRepository.getAll()
+        );
     }
 
     @Transactional(readOnly = true)

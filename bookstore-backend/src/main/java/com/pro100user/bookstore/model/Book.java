@@ -30,7 +30,7 @@ public class Book implements Serializable {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "author_books",
             joinColumns = @JoinColumn(name = "book_id"),

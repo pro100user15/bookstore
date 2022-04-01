@@ -1,5 +1,6 @@
 package com.pro100user.bookstore.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
