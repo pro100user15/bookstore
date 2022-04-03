@@ -2,6 +2,7 @@ package com.pro100user.bookstore.controller;
 
 import com.pro100user.bookstore.dto.CategoryDTO;
 import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
+import com.pro100user.bookstore.model.Category;
 import com.pro100user.bookstore.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,22 +26,22 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryWithBooksDTO> details(@PathVariable("id") Long id) {
+    public ResponseEntity<CategoryDTO> details(@PathVariable("id") Long id) {
         return new ResponseEntity<>(categoryService.readById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CategoryWithBooksDTO> create(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.create(categoryDTO), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<CategoryWithBooksDTO> update(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.update(categoryDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CategoryWithBooksDTO> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<CategoryDTO> delete(@PathVariable("id") Long id) {
         return new ResponseEntity<>(categoryService.delete(id), HttpStatus.OK);
     }
 }
