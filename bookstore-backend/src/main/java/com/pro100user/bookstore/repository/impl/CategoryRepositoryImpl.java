@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> implements CategoryRepository {
 
-    private final String SELECT_BY_NAME = "FROM Category WHERE name like :name";
-    private final String SELECT_COUNT_BOOKS = "SELECT books.size FROM Category WHERE id=:id";
+    private static final String SELECT_BY_NAME = "FROM Category WHERE name like :name";
+    private static final String SELECT_COUNT_BOOKS = "SELECT books.size FROM Category WHERE id=:id";
 
     public CategoryRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -22,12 +22,16 @@ public class CategoryRepositoryImpl extends BasicRepositoryImpl<Category, Long> 
 
     @Override
     public Category findByName(String name) {
-        return sessionFactory.getCurrentSession().createQuery(SELECT_BY_NAME, Category.class)
-                .setParameter("name", name).getSingleResult();
+        return sessionFactory.openSession()
+                .createQuery(SELECT_BY_NAME, Category.class)
+                .setParameter("name", name)
+                .getSingleResult();
     }
 
     public int getBookSizeByCategoryName(Long id) {
-        return (int) sessionFactory.getCurrentSession().createQuery(SELECT_COUNT_BOOKS)
-                .setParameter("id", id).getSingleResult();
+        return (int) sessionFactory.openSession()
+                .createQuery(SELECT_COUNT_BOOKS)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     @Override
     public User create(User user) {
         user.setRoles(Set.of(Role.ROLE_USER));
@@ -28,31 +28,30 @@ public class UserServiceImpl implements UserService {
         return userRepository.create(user);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User readById(Long id) {
         return userRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.update(user);
     }
 
+    @Transactional
     @Override
     public User delete(Long id) {
         User user = readById(id);
         return userRepository.delete(user);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> getAll() {
         return userRepository.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);

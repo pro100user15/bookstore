@@ -12,10 +12,6 @@ import {AuthActionEnum, SetAuthAction} from "../../store/actions/auth";
 import {useDispatch} from "react-redux";
 import {Link, NavLink, useNavigate} from "react-router-dom";
 
-interface ILoginFormProps {
-    setIsLogin(flag: boolean): void
-}
-
 const LoginForm: FC = () => {
     const { handleSubmit, control } = useForm<UserLogin>({
         mode: 'onBlur'

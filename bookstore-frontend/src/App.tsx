@@ -39,9 +39,7 @@ const App: FC = () => {
         <>
             <CssBaseline />
             <Header/>
-            {/*<Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>*/}
-                <AppRouter/>
-            {/*</Container>*/}
+            <AppRouter/>
         </>
     );
 }

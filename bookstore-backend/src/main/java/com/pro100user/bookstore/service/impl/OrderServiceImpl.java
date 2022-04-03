@@ -11,35 +11,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
+    @Transactional
     @Override
     public Order create(Order object) {
         return orderRepository.create(object);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Order readById(Long id) {
         return orderRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public Order update(Order object) {
         return orderRepository.update(object);
     }
 
+    @Transactional
     @Override
     public Order delete(Long id) {
         Order order = readById(id);
         return orderRepository.delete(order);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Order> getAll() {
         return orderRepository.getAll();

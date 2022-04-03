@@ -16,63 +16,65 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
+    @Transactional
     @Override
-    public CategoryWithBooksDTO create(CategoryDTO category) {
-        return categoryMapper.toCategoryWithBooksDTO(
+    public CategoryDTO create(CategoryDTO category) {
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.create(
                         categoryMapper.toCategory(category)
                 ));
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public CategoryWithBooksDTO readById(Long id) {
-        return categoryMapper.toCategoryWithBooksDTO(
+    public CategoryDTO readById(Long id) {
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.readById(id)
         );
     }
 
+    @Transactional
     @Override
-    public CategoryWithBooksDTO update(CategoryDTO category) {
-        return categoryMapper.toCategoryWithBooksDTO(
+    public CategoryDTO update(CategoryDTO category) {
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.update(
                         categoryMapper.toCategory(category)
                 ));
     }
 
+    @Transactional
     @Override
-    public CategoryWithBooksDTO delete(Long id) {
+    public CategoryDTO delete(Long id) {
         Category category = categoryRepository.readById(id);
-        return categoryMapper.toCategoryWithBooksDTO(
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.delete(category)
         );
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Override
-    public List<Category> getAll() {
-        return categoryRepository.getAll();
+    public List<CategoryDTO> getAll() {
+        return categoryMapper.toCategoryDTOList(
+                categoryRepository.getAll()
+        );
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public Category findByName(String name) {
-        return categoryRepository.findByName(name);
+    public CategoryDTO findByName(String name) {
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.findByName(name)
+        );
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
-                new CategoryWithBooksDTO(category,
-                        categoryRepository.getBookSizeByCategoryName(category.getId())))
+                        new CategoryWithBooksDTO(category,
+                                categoryRepository.getBookSizeByCategoryName(category.getId())))
                 .collect(Collectors.toList());
     }
 }

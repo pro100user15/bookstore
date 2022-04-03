@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryWithBooksDTO create(CategoryDTO category);
+    CategoryDTO create(CategoryDTO category);
 
-    CategoryWithBooksDTO readById(Long id);
+    CategoryDTO readById(Long id);
 
-    CategoryWithBooksDTO update(CategoryDTO category);
+    CategoryDTO update(CategoryDTO category);
 
-    CategoryWithBooksDTO delete(Long id);
+    CategoryDTO delete(Long id);
 
-    List<Category> getAll();
+    List<CategoryDTO> getAll();
 
 
-    Category findByName(String name);
+    CategoryDTO findByName(String name);
     List<CategoryWithBooksDTO> getCategoriesWithCountBooks();
 }

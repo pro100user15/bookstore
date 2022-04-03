@@ -13,7 +13,6 @@ const Profile: FC = () => {
 
     useEffect(() => {
         $api.get('/user/profile').then(response => {
-            console.log(response);
             const data = response.data;
             setUser({...data, password: ''});
         });

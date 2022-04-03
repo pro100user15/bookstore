@@ -23,7 +23,7 @@ public class Basket implements Serializable {
 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)

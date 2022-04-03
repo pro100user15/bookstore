@@ -11,35 +11,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
 
+    @Transactional
     @Override
     public Address create(Address object) {
         return addressRepository.create(object);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Address readById(Long id) {
         return addressRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public Address update(Address object) {
         return addressRepository.update(object);
     }
 
+    @Transactional
     @Override
     public Address delete(Long id) {
         Address address = readById(id);
         return addressRepository.delete(address);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Address> getAll() {
         return addressRepository.getAll();

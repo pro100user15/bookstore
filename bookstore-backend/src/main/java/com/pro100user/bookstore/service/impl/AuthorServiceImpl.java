@@ -11,35 +11,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
+    @Transactional
     @Override
     public Author create(Author object) {
         return authorRepository.create(object);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Author readById(Long id) {
         return authorRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public Author update(Author object) {
         return authorRepository.update(object);
     }
 
+    @Transactional
     @Override
     public Author delete(Long id) {
         Author author = readById(id);
         return authorRepository.delete(author);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Author> getAll() {
         return authorRepository.getAll();

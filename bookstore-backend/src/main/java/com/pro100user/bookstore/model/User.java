@@ -39,12 +39,11 @@ public class User implements Serializable {
 
     @NotNull
     @Email(message = "Email must match format")
-    @Size(min = 3, max = 320, message = "Email must be between 3 and 320 characters long")
-    @Column(unique = true, length = 320, nullable = false)
+    @Column(nullable = false, unique = true)
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    @Column(unique = true, length = 20)
+    @Column(length = 20, unique = true)
     @NotEmpty(message = "Phone cannot be empty")
     private String phone;
 
@@ -78,7 +77,7 @@ public class User implements Serializable {
     )
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)

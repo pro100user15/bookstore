@@ -17,8 +17,4 @@ $api.interceptors.request.use(
     }
 );
 
-/*$api.interceptors.response.use(
-
-);*/
-
 export default $api;

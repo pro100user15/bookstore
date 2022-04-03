@@ -24,8 +24,6 @@ public class Publishing implements Serializable {
     @NotEmpty(message = "Publishing house cannot be empty")
     private String publishing_name;
 
-
-    @NotNull
     @OneToOne(targetEntity = Address.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;

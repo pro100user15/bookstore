@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Role} from "../models/Authority";
 import HomePage from "../pages/HomePage";
-import RegistrationForms from "../components/RegistrationForms";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import Category from "../components/Categories/Category/Category";
 import Profile from "../pages/Profile";
@@ -45,10 +44,7 @@ const AppRoutes = (): IRote[]  => {
                 {path: RouteNames.LOGIN, component: AuthorizationPage, flag: true},
                 {path: RouteNames.REGISTRATION, component: AuthorizationPage, flag: false}
             ];
-
-            console.log(guestRoutes);
             setRoutes(prev => prev = prev.concat(guestRoutes));
-            console.log(routes);
         }
 
         if(roles && roles.includes(Role.USER)) {
@@ -56,10 +52,7 @@ const AppRoutes = (): IRote[]  => {
                 {path: RouteNames.PROFILE, component: Profile},
                 {path: RouteNames.PROFILE_EDIT, component: ProfileEdit}
             ];
-
-            console.log(userRoutes);
             setRoutes(prev => prev = prev.concat(userRoutes));
-            console.log(routes);
         }
     }, [roles]);
 

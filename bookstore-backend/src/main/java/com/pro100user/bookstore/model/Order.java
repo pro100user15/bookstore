@@ -26,7 +26,7 @@ public class Order implements Serializable {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @NotNull
@@ -50,7 +50,7 @@ public class Order implements Serializable {
     private double totalPrice;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     @Setter(value = AccessLevel.PRIVATE)
     private LocalDate createdAt;
 }

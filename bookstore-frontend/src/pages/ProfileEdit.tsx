@@ -14,7 +14,6 @@ const ProfileEdit: FC = () => {
 
     useEffect(() => {
         $api.get('/user/profile').then(response => {
-            console.log(response);
             const data = response.data;
             setUser({...data, password: ''});
         });
@@ -23,7 +22,6 @@ const ProfileEdit: FC = () => {
     const handleClick = (e: React.MouseEvent) => {
         console.log(user);
         $api.put('/user/profile', user).then(response => {
-            console.log(response);
             navigate('/profile');
             setUser({} as User);
         });

@@ -16,7 +16,7 @@ public class CategoryWithBooksDTO {
     public CategoryWithBooksDTO() {
     }
 
-    public CategoryWithBooksDTO(Category category, int countBooks) {
+    public CategoryWithBooksDTO(CategoryDTO category, int countBooks) {
         this.id = category.getId();
         this.name = category.getName();
         this.countBooks = countBooks;
