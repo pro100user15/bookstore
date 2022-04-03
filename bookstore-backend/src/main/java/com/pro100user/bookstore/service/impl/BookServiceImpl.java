@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
+    @Transactional
     @Override
     public BookListDTO create(BookCreateDTO dto) {
         return bookMapper.toBookListDTO(
@@ -31,7 +31,6 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional(readOnly = true)
     @Override
     public BookDetailsDTO readById(Long id) {
         return bookMapper.toBookDetailsDTO(
@@ -39,6 +38,7 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @Transactional
     @Override
     public BookListDTO update(BookCreateDTO dto) {
         return bookMapper.toBookListDTO(
@@ -48,6 +48,7 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @Transactional
     @Override
     public BookDetailsDTO delete(Long id) {
         return bookMapper.toBookDetailsDTO(
@@ -55,7 +56,6 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<BookListDTO> getAll() {
         return bookMapper.toBookListDTO(
@@ -63,7 +63,20 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional(readOnly = true)
+    @Override
+    public List<BookListDTO> getPageBooks(int page, int size) {
+        return bookMapper.toBookListDTO(
+                bookRepository.getPageBooks(page, size)
+        );
+    }
+
+    @Override
+    public List<BookListDTO> searchBooks(int page, int size, String search) {
+        return bookMapper.toBookListDTO(
+                bookRepository.searchBooks(page, size, search)
+        );
+    }
+
     @Override
     public List<Book> getListBookByCategoryName(String name) {
         return bookRepository.getListBookByCategoryName(name);

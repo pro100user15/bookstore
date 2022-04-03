@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
+    @Transactional
     @Override
     public CategoryWithBooksDTO create(CategoryDTO category) {
         return categoryMapper.toCategoryWithBooksDTO(
@@ -31,7 +31,6 @@ public class CategoryServiceImpl implements CategoryService {
                 ));
     }
 
-    @Transactional(readOnly = true)
     @Override
     public CategoryWithBooksDTO readById(Long id) {
         return categoryMapper.toCategoryWithBooksDTO(
@@ -39,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
+    @Transactional
     @Override
     public CategoryWithBooksDTO update(CategoryDTO category) {
         return categoryMapper.toCategoryWithBooksDTO(
@@ -47,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
                 ));
     }
 
+    @Transactional
     @Override
     public CategoryWithBooksDTO delete(Long id) {
         Category category = categoryRepository.readById(id);
@@ -55,19 +56,16 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @Override
     public List<Category> getAll() {
         return categoryRepository.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
