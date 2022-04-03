@@ -5,11 +5,16 @@ import {Role} from "../../models/Authority";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 import AuthorizationService from "../../services/AuthorizationService";
 import {useDispatch} from "react-redux";
-import {AuthActionEnum, IAuthState} from "../../store/actions/auth";
-import {UserAuthorization} from "../../models/User";
-import {AppBar, Container, Toolbar, Typography} from "@mui/material";
-
+import {AuthActionEnum, IAuthState, SetAuthAction} from "../../store/actions/auth";
+import {UserAuthorization, UserLogin} from "../../models/User";
+import {AppBar, Button, Container, TextField, Toolbar, Typography} from "@mui/material";
+import {useForm, useFormState, Controller, SubmitHandler} from 'react-hook-form';
+import SearchIcon from '@mui/icons-material/Search';
 import './Header.css';
+
+interface ISearchForm {
+    search: string
+}
 
 const Header: FC = () => {
 
@@ -26,38 +31,96 @@ const Header: FC = () => {
         });
     }
 
+    const {handleSubmit, control} = useForm<ISearchForm>({
+        mode: 'onSubmit'
+    });
+    const {errors} = useFormState({
+        control
+    });
+
+    const onSubmit: SubmitHandler<ISearchForm> = (search) => {
+        console.log("search...");
+        /*AuthorizationService.login(user)
+            .then(response => {
+                const token: string = localStorage.getItem('token') || '';
+                const user: UserAuthorization = jwt<UserAuthorization>(token);
+                dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user}} as SetAuthAction);
+                navigate('/');
+            });*/
+    };
+
     return (
         <AppBar>
             <Container maxWidth="xl">
                 <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
-                    <Typography variant="h5" component="div">
-                        <Logo/>
-                        <NavLink to={'/'} className="link"><b>Bookstore</b></NavLink>
-                    </Typography>
-                    <Typography variant="h6" component="div">
-                        <NavLink to="/books" className="link">Books</NavLink>
-                    {(roles && roles.includes(Role.USER)) && (
-                        <NavLink to="/categories" className="link">Categories</NavLink>
-                    )}
-                    {(roles && roles.includes(Role.MODERATOR)) && (
-                        <NavLink to="/categories" className="link">Categories</NavLink>
-                    )}
-                    {(roles && roles.includes(Role.ADMIN)) && (
-                        <NavLink to="/admin" className="link">Admin</NavLink>
-                    )}
-                    </Typography>
-                    {(roles && roles.length) >= 1 && !roles.includes(Role.GUEST) && (
-                        <Typography variant="h6" component="div">
-                            <NavLink to='/profile' className="link">Profile</NavLink>
-                            <NavLink to='/' className="link" onClick={logout}>Log out</NavLink>
+                    <div>
+                        <Typography variant="h5" component="div">
+                            <Logo/>
+                            <NavLink to={'/'} className="header-link"><b>Bookstore</b></NavLink>
                         </Typography>
-                    )}
-                    {(!roles || roles.includes(Role.GUEST)) && (
+                    </div>
+                    <div>
                         <Typography variant="h6" component="div">
-                            <NavLink to='/login' className="link">Log in</NavLink>
-                            <NavLink to='/registration' className="link">Sign Up</NavLink>
+                            <NavLink to="/books" className="header-link">Books</NavLink>
+                            {(roles && roles.includes(Role.MODERATOR)) && (
+                                <NavLink to="/categories" className="header-link">Categories</NavLink>
+                            )}
+                            {(roles && roles.includes(Role.ADMIN)) && (
+                                <NavLink to="/admin" className="header-link">| Admin</NavLink>
+                            )}
                         </Typography>
-                    )}
+                        <form onSubmit={handleSubmit(onSubmit)} style={{display: "flex"}}>
+                            <Controller
+                                control={control}
+                                name="search"
+                                rules={ {required: "Enter search.."} }
+                                render={({field}) => (
+                                    <TextField
+                                        label="Search"
+                                        variant="outlined"
+                                        size="small"
+                                        margin="normal"
+                                        color="secondary"
+                                        fullWidth={true}
+                                        value={field.value}
+                                        onChange={(e) => field.onChange(e)}
+                                        error={!!errors.search?.message}
+                                        helperText={errors.search?.message}
+                                    />
+                                )}
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                fullWidth={ true }
+                                disableElevation={ true }
+                                sx={{
+                                    marginTop: 2,
+                                    marginBottom: 2
+                                }}
+                            >
+                                <SearchIcon />
+                                Search
+                            </Button>
+                        </form>
+                    </div>
+                    <div>
+                        {((roles && roles.length) >= 1 && !roles.includes(Role.GUEST)) ?
+                            (
+                                <Typography variant="h6" component="div">
+                                    <NavLink to='/profile' className="header-link">Profile</NavLink>
+                                    <NavLink to='/' className="header-link" onClick={logout}>Log out</NavLink>
+                                </Typography>
+                            )
+                            :
+                            (
+                                <Typography variant="h6" component="div">
+                                    <NavLink to='/login' className="header-link">Log in</NavLink>
+                                    <NavLink to='/registration' className="header-link">Sign Up</NavLink>
+                                </Typography>
+                            )
+                        }
+                    </div>
                 </Toolbar>
             </Container>
         </AppBar>

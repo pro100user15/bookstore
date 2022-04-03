@@ -8,6 +8,7 @@ import Profile from "../pages/Profile";
 import CategoryDetails from "../components/Categories/CategoryDetails/CategoryDetails";
 import ProfileEdit from "../pages/ProfileEdit";
 import AuthorizationPage from "../pages/AuthorizationPage/AuthorizationPage";
+import BooksPage from "../pages/BooksPage";
 
 interface IAuthorize {
     isLogin?: boolean
@@ -21,6 +22,7 @@ interface IRote {
 
 export enum RouteNames {
     HOME = '/',
+    BOOKS = '/books',
     LOGIN = '/login',
     REGISTRATION = '/registration',
     CATEGORIES = '/categories',
@@ -36,8 +38,7 @@ const AppRoutes = (): IRote[]  => {
     useEffect(() => {
         setRoutes([
             {path: RouteNames.HOME, component: HomePage},
-            {path: RouteNames.CATEGORIES, component: Category},
-            {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails}
+            {path: RouteNames.BOOKS, component: BooksPage},
         ]);
 
         if(roles && roles.includes(Role.GUEST)) {
@@ -59,6 +60,17 @@ const AppRoutes = (): IRote[]  => {
 
             console.log(userRoutes);
             setRoutes(prev => prev = prev.concat(userRoutes));
+            console.log(routes);
+        }
+
+        if(roles && (roles.includes(Role.MODERATOR) || roles.includes(Role.ADMIN))) {
+            const moderatorRoutes: IRote[] = [
+                {path: RouteNames.CATEGORIES, component: Category},
+                {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails}
+            ];
+
+            console.log(moderatorRoutes);
+            setRoutes(prev => prev = prev.concat(moderatorRoutes));
             console.log(routes);
         }
     }, [roles]);

@@ -1,19 +1,31 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import cl from './MyModal.module.css';
 import {Box, Modal, Typography} from "@mui/material";
 
-const MyModal = ({children, open, setOpen}) => {
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
 
-    const rootClasses = [cl.myModal];
-    if(visible) {
-        rootClasses.push(cl.active);
-    }
+interface MyModalProps {
+    open: boolean,
+    setOpen(flag: boolean): void,
+    children: React.ReactNode
+}
 
+const MyModal: FC<MyModalProps> = ({open, setOpen, children}) => {
     return (
         <Modal
             open={open}
-            onClose={handleClose}
+            onClose={e => setOpen(false)}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >

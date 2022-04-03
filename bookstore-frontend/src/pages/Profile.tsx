@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react';
 import $api from "../http";
 import {User} from "../models/User";
 import TextField from "@mui/material/TextField";
-import {Button} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 const Profile: FC = () => {
@@ -20,7 +20,7 @@ const Profile: FC = () => {
     }, []);
 
     return (
-        <div>
+        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
             <table>
                 <caption>My profile</caption>
                 <tbody>
@@ -69,7 +69,7 @@ const Profile: FC = () => {
             <Button variant="contained" color="success" onClick={e => navigate('/profile-edit')}>
                 Edit User
             </Button>
-        </div>
+        </Container>
     );
 };
 

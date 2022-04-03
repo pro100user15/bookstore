@@ -27,22 +27,20 @@ const Category: FC = () => {
 
 
     return (
-        <div>
+        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
             <Button variant="contained" color="success" onClick={() => setModalCreate(true)}>
                 Add category
             </Button>
-            <MyModal visible={modalCreate || modalEdit}
-                     setVisible={modalCreate ? setModalCreate : setModalEdit}>
-                {
-                    modalCreate
-                        ?
-                        <AddCategoryForm setModalCreate={setModalCreate}/>
-                        :
-                        <EditCategoryForm setModalEdit={setModalEdit}/>
-                }
-            </MyModal>
+            <MyModal open={modalCreate || modalEdit}
+                     setOpen={modalCreate ? setModalCreate : setModalEdit} children={
+                modalCreate
+                ?
+                <AddCategoryForm setModalCreate={setModalCreate}/>
+                :
+                <EditCategoryForm setModalEdit={setModalEdit}/>
+            }/>
             <CategoryList setModalEdit={setModalEdit}/>
-        </div>
+        </Container>
     );
 }
 

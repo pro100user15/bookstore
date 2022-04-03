@@ -5,16 +5,12 @@ import {useForm, useFormState, Controller, SubmitHandler} from 'react-hook-form'
 import {UserAuthorization, UserLogin} from "../../models/User";
 import {emailValidation, passwordValidation} from "./validation";
 
-import './LoginForm.css'
 import AuthorizationService from "../../services/AuthorizationService";
 import jwt from "jwt-decode";
 import {AuthActionEnum, SetAuthAction} from "../../store/actions/auth";
 import {useDispatch} from "react-redux";
 import {Link, NavLink, useNavigate} from "react-router-dom";
-
-interface ILoginFormProps {
-    setIsLogin(flag: boolean): void
-}
+import './LoginForm.scss'
 
 const LoginForm: FC = () => {
     const { handleSubmit, control } = useForm<UserLogin>({
@@ -35,7 +31,7 @@ const LoginForm: FC = () => {
                 dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user}} as SetAuthAction);
                 navigate('/');
             });
-    }
+    };
 
     return (
         <div className='login-form'>
@@ -94,10 +90,10 @@ const LoginForm: FC = () => {
                 >
                     Log in
                 </Button>
-                <Typography component="div">
+                <Typography component="div" sx={{marginTop: "10px"}}>
                     <NavLink to='/registration' className="link">Forgot password?</NavLink>
                 </Typography>
-                <Typography component="div">
+                <Typography component="div" sx={{marginTop: "5px"}}>
                     Don’t have an account?
                     <NavLink to='/registration' className="link">Sign Up</NavLink>
                 </Typography>
