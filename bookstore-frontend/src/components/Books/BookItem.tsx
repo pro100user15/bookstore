@@ -5,11 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {Book} from "../../models/Book";
-import {Rating} from "@mui/material";
+import {BookList} from "../../models/Book";
 
 interface BookItemProps {
-    book: Book
+    book: BookList
 }
 
 const BookItem: FC<BookItemProps> = ({book}) => {

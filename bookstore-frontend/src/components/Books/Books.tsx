@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Book} from "../../models/Book";
+import {BookList} from "../../models/Book";
 import BookItem from "./BookItem";
 import $api from "../../http";
 import {Pagination} from "@mui/material";
 
 const Books = () => {
-    const [books, setBooks] = useState<Book[]>([]);
+    const [books, setBooks] = useState<BookList[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [size, setSize] = useState<number>(2);
 
     useEffect(() => {
-        $api.get<Book[]>("/books").then(value => {
+        $api.get<BookList[]>("/books?page=" + page + "&size=" + size)
+            .then(value => {
             setBooks(value.data);
         })
     }, [])

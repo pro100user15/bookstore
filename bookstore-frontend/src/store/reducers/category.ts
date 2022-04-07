@@ -1,4 +1,5 @@
 import {CategoryAction, CategoryActionEnum, EditCategory, ICategoryState} from "../actions/category";
+import {CategoryWithCountBooks} from "../../models/Category";
 
 const initialState: ICategoryState = {
     categories: [],
@@ -10,7 +11,12 @@ export default function authReducer(state = initialState, action: CategoryAction
         case CategoryActionEnum.SET_CATEGORIES:
             return {...state, categories: action.payload};
         case CategoryActionEnum.ADD_CATEGORY:
-            return {...state, categories: [...state.categories, action.payload]};
+            const category: CategoryWithCountBooks = {
+                id: action.payload.id,
+                name: action.payload.name,
+                countBooks: 0
+            }
+            return {...state, categories: [...state.categories, category]};
         case CategoryActionEnum.UPDATE_CATEGORY:
             return {...state, categories: [...state.categories, state.categories[action.payload.index] = action.payload.category]};
         case CategoryActionEnum.DELETE_CATEGORY:

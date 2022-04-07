@@ -1,0 +1,19 @@
+.add-book-form {
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.add-book-form__form {
+  max-width: 360px;
+}
+
+.link {
+  margin: 10px;
+  text-decoration: none;
+  color: blue;
+}

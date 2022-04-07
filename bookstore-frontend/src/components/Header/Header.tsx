@@ -73,7 +73,6 @@ const Header: FC = () => {
                             <Controller
                                 control={control}
                                 name="search"
-                                rules={ {required: "Enter search.."} }
                                 render={({field}) => (
                                     <TextField
                                         label="Search"
@@ -84,8 +83,6 @@ const Header: FC = () => {
                                         fullWidth={true}
                                         value={field.value}
                                         onChange={(e) => field.onChange(e)}
-                                        error={!!errors.search?.message}
-                                        helperText={errors.search?.message}
                                     />
                                 )}
                             />
@@ -100,7 +97,6 @@ const Header: FC = () => {
                                 }}
                             >
                                 <SearchIcon />
-                                Search
                             </Button>
                         </form>
                     </div>

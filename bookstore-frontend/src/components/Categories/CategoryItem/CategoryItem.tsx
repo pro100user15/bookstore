@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {Link} from "react-router-dom";
 import classes from './CategoryItem.module.css';
 import {CategoryWithCountBooks} from "../../../models/Category";
@@ -10,7 +10,7 @@ import {
     SetEditCategoryAction,
     UpdateCategoryAction
 } from "../../../store/actions/category";
-import {Button} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 
 interface CategoryItemProps {
     index: number,
@@ -19,6 +19,8 @@ interface CategoryItemProps {
 }
 
 const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) => {
+
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -38,6 +40,7 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                 dispatch({
                     type: CategoryActionEnum.DELETE_CATEGORY, payload: category
                 } as DeleteCategoryAction);
+                setOpenDialog(false);
             });
     };
 
@@ -49,7 +52,28 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
             </div>
             <div>
                 <Button variant="outlined" onClick={edit} style={{marginRight: '5px'}}>Edit</Button>
-                <Button variant="outlined" onClick={remove}>Delete</Button>
+                <Button variant="outlined" onClick={e => setOpenDialog(true)}>Delete</Button>
+                <Dialog
+                    open={openDialog}
+                    onClose={e => setOpenDialog(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Delete this category?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            If you delete this category, you can delete books related to this category
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={e => setOpenDialog(false)}>No</Button>
+                        <Button onClick={remove} autoFocus>
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         </div>
     );

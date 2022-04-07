@@ -1,4 +1,4 @@
-import {CategoryWithCountBooks} from "../../models/Category";
+import {Category, CategoryWithCountBooks} from "../../models/Category";
 
 export interface EditCategory {
     index: number,
@@ -25,7 +25,7 @@ export interface SetCategoriesAction {
 
 export interface AddCategoryAction {
     type: CategoryActionEnum.ADD_CATEGORY,
-    payload: CategoryWithCountBooks
+    payload: Category
 }
 
 export interface UpdateCategoryAction {

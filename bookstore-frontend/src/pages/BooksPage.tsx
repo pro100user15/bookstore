@@ -5,6 +5,7 @@ import Books from "../components/Books/Books";
 import {Role} from "../models/Authority";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import MyModal from "../components/UI/modal/MyModal";
+import AddBookForm from "../components/Books/AddBookForm/AddBookForm";
 
 const BooksPage: FC = () => {
 
@@ -15,7 +16,7 @@ const BooksPage: FC = () => {
     const [sort, setSort] = useState<string>("1");
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
+        <Container maxWidth="xl" sx={{marginTop: "100px", paddingTop: "10px"}}>
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <Typography variant="h4" component="div">
                     Books
@@ -40,7 +41,7 @@ const BooksPage: FC = () => {
                 <div>
                     <Button onClick={e => setOpen(true)} sx={{border: "1px solid blue", borderRadius: "2px"}}>Add Book</Button>
                     <MyModal open={open} setOpen={setOpen} children={
-                        <div>Hello</div>
+                        <AddBookForm/>
                     }/>
                 </div>
             }

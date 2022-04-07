@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Role} from "../models/Authority";
 import HomePage from "../pages/HomePage";
-import RegistrationForms from "../components/RegistrationForms";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import Category from "../components/Categories/Category/Category";
 import Profile from "../pages/Profile";

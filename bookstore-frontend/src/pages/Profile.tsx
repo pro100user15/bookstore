@@ -20,7 +20,7 @@ const Profile: FC = () => {
     }, []);
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
+        <Container maxWidth="xl" sx={{marginTop: "100px", paddingTop: "10px"}}>
             <table>
                 <caption>My profile</caption>
                 <tbody>

@@ -2,7 +2,7 @@ import $api from '../http';
 import axios, {AxiosResponse} from "axios";
 import {Category, CategoryWithCountBooks} from "../models/Category";
 
-const CATEGORIES_URL = /*process.env.REACT_APP_BASE_URL +*/ '/categories/';
+const CATEGORIES_URL = '/categories/';
 
 class CategoryService {
 
@@ -14,17 +14,16 @@ class CategoryService {
    static async getCategoryById(id : string | undefined): Promise<AxiosResponse<CategoryWithCountBooks>> {
       return $api
           .get<CategoryWithCountBooks>(CATEGORIES_URL + id);
-          //.then(response => response.status ===);
    }
 
-   static async createCategory(category: CategoryWithCountBooks): Promise<AxiosResponse<CategoryWithCountBooks>> {
+   static async createCategory(category: Category): Promise<AxiosResponse<CategoryWithCountBooks>> {
       return $api
           .post<CategoryWithCountBooks>(CATEGORIES_URL, category);
    }
 
-   static async updateCategory(category: CategoryWithCountBooks): Promise<AxiosResponse<CategoryWithCountBooks>> {
+   static async updateCategory(category: CategoryWithCountBooks): Promise<AxiosResponse<Category>> {
       return $api
-          .put<CategoryWithCountBooks>(CATEGORIES_URL, category);
+          .put<Category>(CATEGORIES_URL, category);
    }
 
    static async deleteCategory(category: CategoryWithCountBooks): Promise<AxiosResponse<CategoryWithCountBooks>> {
