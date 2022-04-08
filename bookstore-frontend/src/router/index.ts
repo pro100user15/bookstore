@@ -8,6 +8,7 @@ import CategoryDetails from "../components/Categories/CategoryDetails/CategoryDe
 import ProfileEdit from "../pages/ProfileEdit";
 import AuthorizationPage from "../pages/AuthorizationPage/AuthorizationPage";
 import BooksPage from "../pages/BooksPage";
+import BookDetailsPage from "../components/Books/BookDetailsPage";
 
 interface IAuthorize {
     isLogin?: boolean
@@ -38,6 +39,7 @@ const AppRoutes = (): IRote[]  => {
         setRoutes([
             {path: RouteNames.HOME, component: HomePage},
             {path: RouteNames.BOOKS, component: BooksPage},
+            {path: RouteNames.BOOKS + '/:id', component: BookDetailsPage},
         ]);
 
         if(roles && roles.includes(Role.GUEST)) {

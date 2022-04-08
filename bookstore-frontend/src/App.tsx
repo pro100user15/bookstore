@@ -2,7 +2,7 @@ import React, {FC, useEffect} from 'react';
 import Header from "./components/Header/Header";
 import {UserAuthorization} from "./models/User";
 import AppRouter from "./router/AppRouter";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AuthActionEnum, IAuthState} from "./store/actions/auth";
 import jwt from "jwt-decode";
 import {useTypedSelector} from "./hooks/useTypedSelector";
@@ -12,9 +12,12 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {Container, CssBaseline} from "@mui/material";
-
+import ReduxToastr from "react-redux-toastr";
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 
 const App: FC = () => {
+
+    const state = useTypedSelector(s => s.toastr);
 
     const token: string = useTypedSelector<string>(state => state.auth.token);
 
@@ -39,9 +42,17 @@ const App: FC = () => {
         <>
             <CssBaseline />
             <Header/>
-            {/*<Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>*/}
-                <AppRouter/>
-            {/*</Container>*/}
+            <AppRouter/>
+            <ReduxToastr
+                timeOut={7000}
+                newestOnTop={false}
+                preventDuplicates
+                position='top-right'
+                transitionIn="bounceInDown"
+                transitionOut="bounceOutUp"
+                progressBar
+                closeOnToastrClick
+            />
         </>
     );
 }

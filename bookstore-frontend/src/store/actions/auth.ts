@@ -1,4 +1,4 @@
-import {UserAuthorization, UserLogin} from "../../models/User";
+import {UserAuthorization} from "../../models/User";
 
 export interface IAuthState {
     token: string,

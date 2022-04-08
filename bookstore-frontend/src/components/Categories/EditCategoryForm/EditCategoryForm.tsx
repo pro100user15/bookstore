@@ -8,6 +8,8 @@ import CategoryService from "../../../services/CategoryService";
 import {CategoryWithCountBooks} from "../../../models/Category";
 import {useDispatch} from "react-redux";
 import {Controller, SubmitHandler, useForm, useFormState} from "react-hook-form";
+import swal from "sweetalert";
+import {toastr} from "react-redux-toastr";
 
 interface EditCategoryFormProps {
     setModalEdit(flag: boolean): void
@@ -18,7 +20,7 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({setModalEdit}) => {
 
     const dispatch = useDispatch();
 
-    const {handleSubmit, control, setValue} = useForm<CategoryWithCountBooks>({
+    const {handleSubmit, control, setValue, setFocus, setError} = useForm<CategoryWithCountBooks>({
         mode: 'onBlur'
     });
     const {errors} = useFormState({
@@ -41,6 +43,13 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({setModalEdit}) => {
                     }
                 } as UpdateCategoryAction);
                 setModalEdit(false);
+            })
+            .catch(reason => {
+                if (reason.response.status === 400) {
+                    toastr.warning('Message', reason.response.data.error);
+                    setError("name", { type: "custom", message: reason.response.data.error});
+                    setFocus("name");
+                }
             });
     };
 

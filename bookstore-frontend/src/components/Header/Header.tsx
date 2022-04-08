@@ -10,6 +10,7 @@ import {UserAuthorization, UserLogin} from "../../models/User";
 import {AppBar, Button, Container, TextField, Toolbar, Typography} from "@mui/material";
 import {useForm, useFormState, Controller, SubmitHandler} from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
+import ReduxToastr from "react-redux-toastr";
 import './Header.css';
 
 interface ISearchForm {

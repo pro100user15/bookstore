@@ -6,6 +6,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {BookList} from "../../models/Book";
+import classes from "../Categories/CategoryItem/CategoryItem.module.css";
+import {Link} from "react-router-dom";
 
 interface BookItemProps {
     book: BookList
@@ -22,7 +24,7 @@ const BookItem: FC<BookItemProps> = ({book}) => {
             />
             <CardContent sx={{height: 160}}>
                 <Typography gutterBottom variant="body1" component="div">
-                    {book.name}
+                    <Link to={`/books/${book.id}`}>{book.name}</Link>
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {book.authors.map(author =>

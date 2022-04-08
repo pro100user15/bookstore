@@ -11,6 +11,7 @@ import {AuthActionEnum, SetAuthAction} from "../../store/actions/auth";
 import {useDispatch} from "react-redux";
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import './LoginForm.scss'
+import {toastr} from "react-redux-toastr";
 
 const LoginForm: FC = () => {
     const { handleSubmit, control } = useForm<UserLogin>({
@@ -29,6 +30,7 @@ const LoginForm: FC = () => {
                 const token: string = localStorage.getItem('token') || '';
                 const user: UserAuthorization = jwt<UserAuthorization>(token);
                 dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user}} as SetAuthAction);
+                toastr.success('Authorization', "Authorization is success");
                 navigate('/');
             });
     };

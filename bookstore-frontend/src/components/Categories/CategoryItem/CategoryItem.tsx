@@ -47,7 +47,7 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
     return (
         <div key={category.id} className={classes.categoryItem}>
             <div>
-                {index + 1}.<Link to={`/categories/${category.id}`} className={classes.link}>{category.name}</Link>
+                <Link to={`/categories/${category.id}`} className={classes.link}>{category.name}</Link>
                 <h2>Amount books : {category.countBooks}</h2>
             </div>
             <div>
@@ -64,7 +64,7 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            If you delete this category, you can delete books related to this category
+                            If you delete this category, you delete all books associated with this category
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

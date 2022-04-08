@@ -1,11 +1,13 @@
 import React, {FC, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import {Alert, AlertTitle, Button, Typography} from '@mui/material';
+import swal from 'sweetalert';
 import CategoryService from "../../../services/CategoryService";
 import {useDispatch} from "react-redux";
 import {AddCategoryAction, CategoryActionEnum} from "../../../store/actions/category";
 import {Controller, SubmitHandler, useForm, useFormState} from "react-hook-form";
 import {Category, CategoryWithCountBooks} from "../../../models/Category";
+import {toastr} from "react-redux-toastr";
 
 interface AddCategoryFormProps {
     setModalCreate(flag: boolean): void
@@ -16,7 +18,7 @@ const AddCategoryForm: FC<AddCategoryFormProps> = ({setModalCreate}) => {
 
     const dispatch = useDispatch();
 
-    const {handleSubmit, control, setValue} = useForm<CategoryWithCountBooks>({
+    const {handleSubmit, control, setFocus, setError} = useForm<CategoryWithCountBooks>({
         mode: 'onBlur'
     });
     const {errors} = useFormState({
@@ -31,9 +33,10 @@ const AddCategoryForm: FC<AddCategoryFormProps> = ({setModalCreate}) => {
             })
             .catch(reason => {
                 if (reason.response.status === 400) {
-                    alert(reason.response.data.error);
+                    toastr.warning('Message', reason.response.data.error);
+                    setError("name", { type: "custom", message: reason.response.data.error});
+                    setFocus("name");
                 }
-                setModalCreate(false);
             });
     };
 
