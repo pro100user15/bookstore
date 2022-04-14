@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -21,13 +22,14 @@ public class UserRepositoryImpl extends BasicRepositoryImpl<User, Long> implemen
 
     @Override
     public User findByEmail(String email) {
-        User user = sessionFactory.getCurrentSession()
-                .createQuery(findUserByEmail, User.class)
-                .setParameter("email", email)
-                .getSingleResult();
-        if(user == null) {
-            throw new NotFoundException("User with email " + email + " is not found");
+        try {
+            return sessionFactory.getCurrentSession()
+                    .createQuery(findUserByEmail, User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
         }
-        return user;
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }

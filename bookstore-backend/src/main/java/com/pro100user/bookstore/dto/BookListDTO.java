@@ -13,4 +13,5 @@ public class BookListDTO {
     private Set<AuthorDTO> authors;
     private String image;
     private double price;
+    private CategoryDTO category;
 }

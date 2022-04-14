@@ -3,21 +3,18 @@ package com.pro100user.bookstore.controller;
 import com.pro100user.bookstore.dto.BookCreateDTO;
 import com.pro100user.bookstore.dto.BookDetailsDTO;
 import com.pro100user.bookstore.dto.BookListDTO;
-import com.pro100user.bookstore.dto.CategoryDTO;
-import com.pro100user.bookstore.mapper.BookMapper;
 import com.pro100user.bookstore.model.enums.Language;
 import com.pro100user.bookstore.model.enums.Type;
-import com.pro100user.bookstore.service.AuthorService;
 import com.pro100user.bookstore.service.BookService;
-import com.pro100user.bookstore.service.CategoryService;
-import com.pro100user.bookstore.service.TranslatorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,21 +24,12 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final BookService bookService;
-    private final AuthorService authorService;
-    private final CategoryService categoryService;
-    private final TranslatorService translatorService;
 
     @GetMapping
-    public ResponseEntity<List<BookListDTO>> books(@RequestParam int page,
-                                                   @RequestParam int size) {
+    public ResponseEntity<List<BookListDTO>> books(@RequestParam(defaultValue = "1") int page,
+                                                   @RequestParam(defaultValue = "25") int size,
+                                                   @RequestParam(required = false) String search) {
         return new ResponseEntity<>(bookService.getPageBooks(page, size), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<BookListDTO>> searchBooks(@RequestParam int page,
-                                                         @RequestParam int size,
-                                                         @RequestParam String search) {
-        return new ResponseEntity<>(bookService.searchBooks(page, size, search), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -64,18 +52,22 @@ public class BookController {
         return new ResponseEntity<>(bookService.delete(id), HttpStatus.OK);
     }
 
-    @GetMapping("categories")
-    public ResponseEntity<Map<String, List<Object>>> categories() {
-        Map<String, List<Object>> map = new HashMap<>();
-        map.put("authors", Collections.singletonList(authorService.getAll()));
-        map.put("categories", Collections.singletonList(categoryService.getAll()));
-        map.put("translators", Collections.singletonList(translatorService.getAll()));
-        map.put("languages", Arrays.stream(Language.values())
+    @GetMapping("count")
+    public ResponseEntity<Map<String, Long>> getCount() {
+        return new ResponseEntity<>(Map.of("count", bookService.getCount()), HttpStatus.OK);
+    }
+
+    @GetMapping("languages")
+    public ResponseEntity<List<String>> languages() {
+        return new ResponseEntity<>(Arrays.stream(Language.values())
                 .map(type -> type.name())
-                .collect(Collectors.toList()));
-        map.put("types", Arrays.stream(Type.values())
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping("types")
+    public ResponseEntity<List<String>> types() {
+        return new ResponseEntity<>(Arrays.stream(Type.values())
                 .map(type -> type.name())
-                .collect(Collectors.toList()));
-        return new ResponseEntity<>(map, HttpStatus.OK);
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 }

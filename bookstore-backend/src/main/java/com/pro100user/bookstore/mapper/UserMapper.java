@@ -2,6 +2,7 @@ package com.pro100user.bookstore.mapper;
 
 import com.pro100user.bookstore.dto.UserAuthenticationDTO;
 import com.pro100user.bookstore.dto.UserDTO;
+import com.pro100user.bookstore.dto.UserEditDTO;
 import com.pro100user.bookstore.model.User;
 import org.mapstruct.Mapper;
 
@@ -16,4 +17,6 @@ public interface UserMapper {
     User ToUser(UserDTO userDTO);
     UserDTO ToUserDTO(User user);
     List<UserDTO> ToUserDTOList(List<User> users);
+
+    User ToUser(UserEditDTO userDTO);
 }

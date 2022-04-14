@@ -1,6 +1,7 @@
 package com.pro100user.bookstore.security;
 
 import com.pro100user.bookstore.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+@Getter
 public class CustomUserDetails implements UserDetails {
 
     private String email;
@@ -60,9 +62,5 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

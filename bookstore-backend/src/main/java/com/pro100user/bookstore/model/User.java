@@ -65,7 +65,6 @@ public class User implements Serializable {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    @Setter(value = AccessLevel.PRIVATE)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)

@@ -5,6 +5,8 @@ import com.pro100user.bookstore.model.enums.Language;
 import com.pro100user.bookstore.model.enums.Type;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -29,8 +31,8 @@ public class Book implements Serializable {
     @Column(length = 64, nullable = false)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "author_books",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -47,6 +49,7 @@ public class Book implements Serializable {
     @NotNull
     private String image;
 
+    @Fetch(FetchMode.JOIN)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
     @JoinColumn(name = "category_id")

@@ -8,5 +8,6 @@ public interface BookRepository extends BasicRepository<Book, Long> {
 
     List<Book> getPageBooks(int page, int size);
     List<Book> searchBooks(int page, int size, String search);
+    long getCount();
     List<Book> getListBookByCategoryName(String name);
 }

@@ -8,7 +8,6 @@ import com.pro100user.bookstore.model.Book;
 import com.pro100user.bookstore.repository.BookRepository;
 import com.pro100user.bookstore.service.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -32,6 +32,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookDetailsDTO readById(Long id) {
         return bookMapper.toBookDetailsDTO(
                 bookRepository.readById(id)
@@ -75,6 +76,11 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toBookListDTO(
                 bookRepository.searchBooks(page, size, search)
         );
+    }
+
+    @Override
+    public long getCount() {
+        return bookRepository.getCount();
     }
 
     @Override

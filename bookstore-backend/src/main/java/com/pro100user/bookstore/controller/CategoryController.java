@@ -30,17 +30,17 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryWithBooksDTO> create(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.create(categoryDTO), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<CategoryWithBooksDTO> update(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryWithBooksDTO> update(@RequestBody CategoryWithBooksDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.update(categoryDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CategoryWithBooksDTO> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<CategoryDTO> delete(@PathVariable("id") Long id) {
         return new ResponseEntity<>(categoryService.delete(id), HttpStatus.OK);
     }
 }

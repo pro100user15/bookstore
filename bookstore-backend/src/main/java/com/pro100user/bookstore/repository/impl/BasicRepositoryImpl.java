@@ -3,9 +3,11 @@ package com.pro100user.bookstore.repository.impl;
 import com.pro100user.bookstore.exception.NotFoundException;
 import com.pro100user.bookstore.repository.BasicRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Slf4j
+@Transactional
 public abstract class BasicRepositoryImpl<T extends Serializable, I extends Serializable> implements BasicRepository<T, I> {
 
     protected final SessionFactory sessionFactory;
@@ -34,7 +37,7 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T readById(I id) {
-        T entity = sessionFactory.openSession().get(basicClass, id);
+        T entity = sessionFactory.getCurrentSession().get(basicClass, id);
         if(entity == null) {
             throw new NotFoundException(basicClass.getName() + " with id " + id + " not found!");
         }
@@ -43,19 +46,20 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T update(T entity) {
+        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
     public T delete(T entity) {
-        sessionFactory.getCurrentSession().remove(entity);
+        sessionFactory.getCurrentSession().delete(entity);
         return entity;
     }
 
     @Override
     public List<T> getAll() {
-        return sessionFactory.openSession()
+        return sessionFactory.getCurrentSession()
                 .createQuery("FROM " + basicClass.getName())
                 .getResultList();
     }

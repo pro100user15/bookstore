@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -24,8 +25,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Transactional
     @Override
-    public CategoryWithBooksDTO create(CategoryDTO category) {
-        return categoryMapper.toCategoryWithBooksDTO(
+    public CategoryDTO create(CategoryDTO category) {
+        if(categoryRepository.findByName(category.getName()) != null)
+            throw new IllegalArgumentException("This category name is already taken");
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.create(
                         categoryMapper.toCategory(category)
                 ));
@@ -33,25 +36,31 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryWithBooksDTO readById(Long id) {
-        return categoryMapper.toCategoryWithBooksDTO(
-                categoryRepository.readById(id)
+        return new CategoryWithBooksDTO(
+                categoryRepository.readById(id),
+                categoryRepository.getBookSizeByCategoryId(id)
         );
     }
 
     @Transactional
     @Override
-    public CategoryWithBooksDTO update(CategoryDTO category) {
-        return categoryMapper.toCategoryWithBooksDTO(
+    public CategoryWithBooksDTO update(CategoryWithBooksDTO categoryDto) {
+        Category category = categoryRepository.findByName(categoryDto.getName());
+        if(category != null && category.getId() != categoryDto.getId())
+            throw new IllegalArgumentException("This category name is already taken");
+        return new CategoryWithBooksDTO(
                 categoryRepository.update(
-                        categoryMapper.toCategory(category)
-                ));
+                        categoryMapper.toCategory(categoryDto)
+                ),
+                categoryRepository.getBookSizeByCategoryId(categoryDto.getId())
+        );
     }
 
     @Transactional
     @Override
-    public CategoryWithBooksDTO delete(Long id) {
+    public CategoryDTO delete(Long id) {
         Category category = categoryRepository.readById(id);
-        return categoryMapper.toCategoryWithBooksDTO(
+        return categoryMapper.toCategoryDTO(
                 categoryRepository.delete(category)
         );
     }
@@ -70,7 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
                 new CategoryWithBooksDTO(category,
-                        categoryRepository.getBookSizeByCategoryName(category.getId())))
+                        categoryRepository.getBookSizeByCategoryId(category.getId())))
                 .collect(Collectors.toList());
     }
 }

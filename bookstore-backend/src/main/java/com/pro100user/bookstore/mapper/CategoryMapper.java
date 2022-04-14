@@ -15,12 +15,10 @@ public interface CategoryMapper {
 
 
     Category toCategory(CategoryDTO categoryDTO);
-
     CategoryDTO toCategoryDTO(Category category);
-
     List<CategoryDTO> toCategoryDTOList(List<Category> categories);
 
+    Category toCategory(CategoryWithBooksDTO categoryDTO);
     CategoryWithBooksDTO toCategoryWithBooksDTO(Category category);
-
     List<CategoryWithBooksDTO> toCategoryWithBooksDTOList(List<Category> categories);
 }

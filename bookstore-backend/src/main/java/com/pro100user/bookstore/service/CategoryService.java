@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryWithBooksDTO create(CategoryDTO category);
+    CategoryDTO create(CategoryDTO category);
 
     CategoryWithBooksDTO readById(Long id);
 
-    CategoryWithBooksDTO update(CategoryDTO category);
+    CategoryWithBooksDTO update(CategoryWithBooksDTO category);
 
-    CategoryWithBooksDTO delete(Long id);
+    CategoryDTO delete(Long id);
 
     List<Category> getAll();
 

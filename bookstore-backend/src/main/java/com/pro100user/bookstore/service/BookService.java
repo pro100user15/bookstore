@@ -22,5 +22,6 @@ public interface BookService {
 
     List<BookListDTO> getPageBooks(int page, int size);
     List<BookListDTO> searchBooks(int page, int size, String search);
+    long getCount();
     List<Book> getListBookByCategoryName(String name);
 }
