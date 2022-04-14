@@ -52,7 +52,15 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
             </div>
             <div>
                 <Button variant="outlined" onClick={edit} style={{marginRight: '5px'}}>Edit</Button>
-                <Button variant="outlined" onClick={e => setOpenDialog(true)}>Delete</Button>
+                <Button variant="outlined" onClick={e => {
+                    category.countBooks > 0 ?
+                        setOpenDialog(true)
+                        :
+                        remove()
+                }}
+                >
+                    Delete
+                </Button>
                 <Dialog
                     open={openDialog}
                     onClose={e => setOpenDialog(false)}
@@ -60,18 +68,15 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">
-                        {"Delete this category?"}
+                        {"Delete category"}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            If you delete this category, you delete all books associated with this category
+                            This category cannot be deleted because books are linked to it
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={e => setOpenDialog(false)}>No</Button>
-                        <Button onClick={remove} autoFocus>
-                            Yes
-                        </Button>
+                        <Button onClick={e => setOpenDialog(false)}>Ok</Button>
                     </DialogActions>
                 </Dialog>
             </div>

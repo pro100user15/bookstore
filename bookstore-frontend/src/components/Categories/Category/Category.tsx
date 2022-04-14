@@ -27,7 +27,7 @@ const Category: FC = () => {
 
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "100px", paddingTop: "10px"}}>
+        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
             <Button variant="contained" color="success" onClick={() => setModalCreate(true)}>
                 Add category
             </Button>

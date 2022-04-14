@@ -35,7 +35,7 @@ const FilterBar: FC = () => {
 
     return (
         <List
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper' }}
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={
@@ -81,7 +81,7 @@ const FilterBar: FC = () => {
                             {option.name}
                         </li>
                     )}
-                    style={{ width: 300 }}
+                    style={{ width: "300px" }}
                     renderInput={(params) => (
                         <TextField {...params} label="Checkboxes" placeholder="Favorites" />
                     )}

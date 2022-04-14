@@ -3,3 +3,7 @@
     text-decoration: none;
     color: white;
 }
+
+.is-active {
+    color: red;
+}

@@ -10,8 +10,6 @@ class AuthorizationService {
         return $api
             .post<string>('/login', user)
             .then(response => {
-                console.log(response);
-                console.log(response.data);
                 if(response.data) {
                     localStorage.setItem('token', response.data);
                 }

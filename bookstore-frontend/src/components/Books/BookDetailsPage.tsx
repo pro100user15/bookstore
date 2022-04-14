@@ -8,15 +8,16 @@ import {toastr} from 'react-redux-toastr'
 const BookDetailsPage: FC = () => {
 
     const [book, setBook] = useState<BookDetails>({} as BookDetails);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
     const params = useParams();
 
     useEffect(() => {
+
         $api.get<BookDetails>("/books/" + params.id)
             .then((response) => {
-                console.log("data", response);
                 setBook(response.data);
-                console.log(book);
+                setLoading(false);
             });
     }, [])
 
@@ -31,7 +32,6 @@ const BookDetailsPage: FC = () => {
                 </div>
                 <div>
                     <table>
-
                     </table>
                 </div>
             </div>

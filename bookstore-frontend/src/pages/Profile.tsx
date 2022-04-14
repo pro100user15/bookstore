@@ -1,14 +1,16 @@
-import {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import $api from "../http";
 import {User} from "../models/User";
-import TextField from "@mui/material/TextField";
 import {Button, Container} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import MyModal from "../components/UI/modal/MyModal";
+import EditUserProfile from "../components/User/EditUserProfile/EditUserProfile";
 
 const Profile: FC = () => {
 
     const [user, setUser] = useState<User>({} as User);
 
+    const [open, setOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,7 +22,7 @@ const Profile: FC = () => {
     }, []);
 
     return (
-        <Container maxWidth="xl" sx={{marginTop: "100px", paddingTop: "10px"}}>
+        <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
             <table>
                 <caption>My profile</caption>
                 <tbody>
@@ -66,9 +68,12 @@ const Profile: FC = () => {
                 </tr>
                 </tbody>
             </table>
-            <Button variant="contained" color="success" onClick={e => navigate('/profile-edit')}>
+            <Button variant="contained" color="success" onClick={e => setOpen(true)}>
                 Edit User
             </Button>
+            <MyModal open={open} setOpen={setOpen} children={
+                <EditUserProfile oldUser={user} setUser={setUser} setModal={setOpen}/>
+            }/>
         </Container>
     );
 };

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {Typography} from "@mui/material";
 import {TextField, Button} from '@mui/material';
 import {useForm, useFormState, Controller, SubmitHandler} from 'react-hook-form';
@@ -12,26 +12,38 @@ import {useDispatch} from "react-redux";
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import './LoginForm.scss'
 import {toastr} from "react-redux-toastr";
+import $api from "../../http";
 
 const LoginForm: FC = () => {
-    const { handleSubmit, control } = useForm<UserLogin>({
+    const {handleSubmit, control} = useForm<UserLogin>({
         mode: 'onBlur'
     });
-    const { errors } = useFormState({
+    const {errors} = useFormState({
         control
     });
+
+    const [error, setError] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<UserLogin> = (user) => {
-        AuthorizationService.login(user)
+        setError(false);
+        $api.post<string>('/login', user)
             .then(response => {
+                if(response.data) {
+                    localStorage.setItem('token', response.data);
+                }
                 const token: string = localStorage.getItem('token') || '';
                 const user: UserAuthorization = jwt<UserAuthorization>(token);
                 dispatch({type: AuthActionEnum.SET_AUTH, payload: {token: token, user: user}} as SetAuthAction);
                 toastr.success('Authorization', "Authorization is success");
                 navigate('/');
+            })
+            .catch(reason => {
+                if(reason.response.status === 400) {
+                    setError(true);
+                }
             });
     };
 
@@ -40,52 +52,58 @@ const LoginForm: FC = () => {
             <Typography variant="h4" component="div">
                 Log in
             </Typography>
-            <Typography variant="subtitle1" component="div" gutterBottom={ true } className='login-form__subtitle'>
-                Log in
-            </Typography>
+            {
+                error &&
+                <Typography variant="subtitle1" component="div"
+                            gutterBottom={true} className='login-form__subtitle'
+                            sx={{color: "red"}}
+                >
+                    Incorrect data entered
+                </Typography>
+            }
             <form className="login-form__form" onSubmit={handleSubmit(onSubmit)}>
                 <Controller
                     control={control}
                     name="email"
-                    rules={ emailValidation }
-                    render={({ field }) => (
+                    rules={emailValidation}
+                    render={({field}) => (
                         <TextField
                             label="Email"
                             size="small"
                             margin="normal"
                             className="login-form__input"
-                            fullWidth={ true }
+                            fullWidth={true}
                             value={field.value}
                             onChange={(e) => field.onChange(e)}
-                            error={ !!errors.email?.message }
-                            helperText={ errors.email?.message }
+                            error={!!errors.email?.message}
+                            helperText={errors.email?.message}
                         />
                     )}
                 />
                 <Controller
                     control={control}
                     name="password"
-                    rules={ passwordValidation }
-                    render={({ field }) => (
+                    rules={passwordValidation}
+                    render={({field}) => (
                         <TextField
                             label="Password"
                             type="password"
                             size="small"
                             margin="normal"
                             className="login-form__input"
-                            fullWidth={ true }
+                            fullWidth={true}
                             value={field.value}
                             onChange={(e) => field.onChange(e)}
-                            error={ !!errors.password?.message }
-                            helperText={ errors.password?.message }
+                            error={!!errors.password?.message}
+                            helperText={errors.password?.message}
                         />
                     )}
                 />
                 <Button
                     type="submit"
                     variant="contained"
-                    fullWidth={ true }
-                    disableElevation={ true }
+                    fullWidth={true}
+                    disableElevation={true}
                     sx={{
                         marginTop: 2
                     }}

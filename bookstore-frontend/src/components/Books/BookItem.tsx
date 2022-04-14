@@ -1,30 +1,57 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {BookList} from "../../models/Book";
-import classes from "../Categories/CategoryItem/CategoryItem.module.css";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {Checkbox} from '@mui/material';
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
+import $api from "../../http";
+import {toastr} from "react-redux-toastr";
+import {useTypedSelector} from "../../hooks/useTypedSelector";
+import {Role} from "../../models/Authority";
 
 interface BookItemProps {
     book: BookList
 }
 
 const BookItem: FC<BookItemProps> = ({book}) => {
+
+    const roles: Role[] = useTypedSelector<Role[]>(state => state.auth.user.roles);
+
+    const navigate = useNavigate();
+
+    const navigateToLogin = () => {
+        navigate("/login");
+        toastr.info("Wish list", "To display the list of desired books, you need to log in to your account");
+    }
+
+    const likeBook = (id: number) => {
+        $api.post("/user/wish-list", id)
+            .then(response => {
+                toastr.success("Bookstore", "The book has been successfully added to the list of favorites");
+            })
+            .catch(reason => {
+                toastr.error("Error", "There were technical problems");
+            });
+    }
+
     return (
-        <Card sx={{ maxWidth: "170px", margin: 1 }}>
+        <Card sx={{maxWidth: "200px", margin: 1}}>
             <CardMedia
                 component="img"
                 image={book.image || "/book.jpg"}
                 alt="book"
-                sx={{width: "140px", height: "210px"}}
+                sx={{width: "200px", height: "370px"}}
             />
-            <CardContent sx={{height: 160}}>
+            <CardContent sx={{height: 140}}>
                 <Typography gutterBottom variant="body1" component="div">
                     <Link to={`/books/${book.id}`}>{book.name}</Link>
+                </Typography>
+                <Typography variant="body2" component="div">
+                    {book.category.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {book.authors.map(author =>
@@ -33,14 +60,20 @@ const BookItem: FC<BookItemProps> = ({book}) => {
                         </Typography>
                     )}
                 </Typography>
-                {/*<Rating name="read-only" value={5} readOnly sx={{fontSize: 14}}/>*/}
                 <Typography variant="subtitle1" color="orange">
                     {book.price}.грн
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Like</Button>
-                <Button size="small">Buy</Button>
+                <Checkbox icon={<FavoriteBorder/>}
+                          checkedIcon={<Favorite/>}
+                          onChange={e => {
+                              (roles && roles.includes(Role.GUEST)) ?
+                                  navigateToLogin()
+                                  :
+                                  likeBook(book.id)
+                          }}
+                />
             </CardActions>
         </Card>
     );

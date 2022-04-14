@@ -9,6 +9,7 @@ import ProfileEdit from "../pages/ProfileEdit";
 import AuthorizationPage from "../pages/AuthorizationPage/AuthorizationPage";
 import BooksPage from "../pages/BooksPage";
 import BookDetailsPage from "../components/Books/BookDetailsPage";
+import WishList from "../pages/WishList";
 
 interface IAuthorize {
     isLogin?: boolean
@@ -27,7 +28,7 @@ export enum RouteNames {
     REGISTRATION = '/registration',
     CATEGORIES = '/categories',
     PROFILE = '/profile',
-    PROFILE_EDIT = '/profile-edit',
+    WISH_LIST = '/wish-list',
 }
 
 const AppRoutes = (): IRote[]  => {
@@ -48,20 +49,16 @@ const AppRoutes = (): IRote[]  => {
                 {path: RouteNames.REGISTRATION, component: AuthorizationPage, flag: false}
             ];
 
-            console.log(guestRoutes);
             setRoutes(prev => prev = prev.concat(guestRoutes));
-            console.log(routes);
         }
 
         if(roles && roles.includes(Role.USER)) {
             const userRoutes: IRote[] = [
                 {path: RouteNames.PROFILE, component: Profile},
-                {path: RouteNames.PROFILE_EDIT, component: ProfileEdit}
+                {path: RouteNames.WISH_LIST, component: WishList},
             ];
 
-            console.log(userRoutes);
             setRoutes(prev => prev = prev.concat(userRoutes));
-            console.log(routes);
         }
 
         if(roles && (roles.includes(Role.MODERATOR) || roles.includes(Role.ADMIN))) {
@@ -70,9 +67,7 @@ const AppRoutes = (): IRote[]  => {
                 {path: RouteNames.CATEGORIES + '/:id', component: CategoryDetails}
             ];
 
-            console.log(moderatorRoutes);
             setRoutes(prev => prev = prev.concat(moderatorRoutes));
-            console.log(routes);
         }
     }, [roles]);
 

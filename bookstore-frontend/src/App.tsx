@@ -48,8 +48,8 @@ const App: FC = () => {
                 newestOnTop={false}
                 preventDuplicates
                 position='top-right'
-                transitionIn="bounceInDown"
-                transitionOut="bounceOutUp"
+                transitionIn="fadeIn"
+                transitionOut="fadeOut"
                 progressBar
                 closeOnToastrClick
             />

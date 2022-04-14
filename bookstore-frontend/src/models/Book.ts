@@ -22,7 +22,8 @@ export interface BookList {
     name: string,
     authors: Author[],
     price: number,
-    image: string
+    image: string,
+    category: Category
 }
 
 export interface Book {
