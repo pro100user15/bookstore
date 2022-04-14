@@ -24,7 +24,7 @@ class AuthorizationService {
             localStorage.removeItem("token");
     }
 
-    static async register(user: User) {
+    static async register(user: UserLogin) {
         return $api
             .post('/registration', user);
     }

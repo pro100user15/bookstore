@@ -1,6 +1,8 @@
 package com.pro100user.bookstore.service.impl;
 
+import com.pro100user.bookstore.dto.CategoryDTO;
 import com.pro100user.bookstore.dto.CategoryWithBooksDTO;
+import com.pro100user.bookstore.mapper.CategoryMapper;
 import com.pro100user.bookstore.model.Category;
 import com.pro100user.bookstore.repository.CategoryRepository;
 import com.pro100user.bookstore.service.CategoryService;
@@ -14,51 +16,65 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
+    @Transactional
     @Override
-    public Category create(Category object) {
-        return categoryRepository.create(object);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Category readById(Long id) {
-        return categoryRepository.readById(id);
-    }
-
-    @Override
-    public Category update(Category object) {
-        readById(object.getId());
-        return categoryRepository.update(object);
+    public CategoryDTO create(CategoryDTO category) {
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.create(
+                        categoryMapper.toCategory(category)
+                ));
     }
 
     @Override
-    public Category delete(Category object) {
-        return categoryRepository.delete(object);
+    public CategoryDTO readById(Long id) {
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.readById(id)
+        );
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    @Transactional
     @Override
-    public List<Category> getAll() {
-        return categoryRepository.getAll();
+    public CategoryDTO update(CategoryDTO category) {
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.update(
+                        categoryMapper.toCategory(category)
+                ));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public List<Category> findByName(String name) {
-        return categoryRepository.findByName(name);
+    public CategoryDTO delete(Long id) {
+        Category category = categoryRepository.readById(id);
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.delete(category)
+        );
     }
 
-    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> getAll() {
+        return categoryMapper.toCategoryDTOList(
+                categoryRepository.getAll()
+        );
+    }
+
+    @Override
+    public CategoryDTO findByName(String name) {
+        return categoryMapper.toCategoryDTO(
+                categoryRepository.findByName(name)
+        );
+    }
+
+    @Override
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
-                new CategoryWithBooksDTO(category,
-                        categoryRepository.getBookSizeByCategoryName(category.getId())))
+                        new CategoryWithBooksDTO(category,
+                                categoryRepository.getBookSizeByCategoryName(category.getId())))
                 .collect(Collectors.toList());
     }
 }

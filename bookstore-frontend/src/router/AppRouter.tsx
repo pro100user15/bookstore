@@ -7,7 +7,7 @@ const AppRouter: React.FC = () => {
         <Routes>
             {AppRoutes().map(route =>
                 <Route path={route.path}
-                       element={<route.component/>}
+                       element={<route.component isLogin={route.flag}/>}
                        key={route.path}
                 />
             )}

@@ -19,7 +19,6 @@ public class Translator implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
     @NotNull
@@ -35,6 +34,6 @@ public class Translator implements Serializable {
     private String surname;
 
 
-    @OneToMany(mappedBy = "translator")
+    @OneToMany(mappedBy = "translator", fetch = FetchType.LAZY)
     private Set<Book> books;
 }

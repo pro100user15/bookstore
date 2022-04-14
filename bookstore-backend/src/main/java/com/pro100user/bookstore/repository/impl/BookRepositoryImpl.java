@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class BookRepositoryImpl extends BasicRepositoryImpl<Book, Long> implements BookRepository {
 
-    private String SELECT_BOOKS_BY_CATEGORY_NAME = "FROM Category.books WHERE Category.name like :name";
+    private static final String SELECT_BOOKS_BY_CATEGORY_NAME = "FROM Category.books WHERE Category.name like :name";
 
     public BookRepositoryImpl(SessionFactory sessionFactory) {
         super(sessionFactory);
@@ -18,7 +18,9 @@ public class BookRepositoryImpl extends BasicRepositoryImpl<Book, Long> implemen
 
     @Override
     public List<Book> getListBookByCategoryName(String name) {
-        return sessionFactory.getCurrentSession().createQuery(SELECT_BOOKS_BY_CATEGORY_NAME, Book.class)
-                .setParameter("name", name).getResultList();
+        return sessionFactory.openSession()
+                .createQuery(SELECT_BOOKS_BY_CATEGORY_NAME, Book.class)
+                .setParameter("name", name)
+                .getResultList();
     }
 }

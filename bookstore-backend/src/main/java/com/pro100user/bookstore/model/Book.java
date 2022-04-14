@@ -44,17 +44,16 @@ public class Book implements Serializable {
     @NotEmpty(message = "Price cannot be empty")
     private double price;
 
-    @NotNull
     private String image;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Publishing.class)
-    @JoinColumn(name = "publishing_id")
+    @JoinColumn(name = "publishing_id", nullable = false)
     private Publishing publishing;
 
     private String bookSeries;
@@ -73,7 +72,6 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    //@PastOrPresent(message = "Publication year cannot be higher than the current year")
     @NotEmpty(message = "Publication year cannot be empty")
     private int yearPublication;
 

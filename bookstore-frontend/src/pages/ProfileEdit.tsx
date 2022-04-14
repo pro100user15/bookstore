@@ -1,44 +1,35 @@
-import React, {useState} from 'react';
-import AuthorizationService from "../services/AuthorizationService";
+import React, {FC, useEffect, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import {Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {User} from "../models/User";
+import $api from "../http";
+import AuthorizationService from "../services/AuthorizationService";
 import {useNavigate} from "react-router-dom";
 
-const RegistrationForm = () => {
-    const [user, setUser] = useState<User>({
-        id:-1,
-        name: '',
-        surname: '',
-        email: '',
-        phone: '',
-        sex: '',
-        password: ''
-    });
+const ProfileEdit: FC = () => {
+
+    const [user, setUser] = useState<User>({} as User);
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        $api.get('/user/profile').then(response => {
+            const data = response.data;
+            setUser({...data, password: ''});
+        });
+    }, []);
+
     const handleClick = (e: React.MouseEvent) => {
         console.log(user);
-        AuthorizationService.register(user)
-            /*.then(response => {
-                console.log(response.data);
-            })*/;
-        navigate('/login');
-        setUser({
-            id: -1,
-            name: '',
-            surname: '',
-            email: '',
-            phone: '',
-            sex: '',
-            password: ''
+        $api.put('/user/profile', user).then(response => {
+            navigate('/profile');
+            setUser({} as User);
         });
     };
 
     return (
-        <div style={{margin: "50px 0 0 800px"}}>
-            <h1>Registration</h1>
+        <div>
+            <h1>Edit User</h1>
             <form noValidate autoComplete="off">
                 <div>
                     <TextField id="standard-basic"
@@ -74,13 +65,13 @@ const RegistrationForm = () => {
                 </div>
                 <div>
                     <FormControl variant="standard" sx={{minWidth: 120}}>
-                        <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
+                        <InputLabel id="demo-simple-select-standard-label">Sex</InputLabel>
                         <Select
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
                             value={user.sex}
                             onChange={(e) => setUser({...user, sex: e.target.value})}
-                            label="Age"
+                            label="Sex"
                         >
                             <MenuItem value={'NO'}>None</MenuItem>
                             <MenuItem value={'MALE'}>Male</MenuItem>
@@ -99,8 +90,28 @@ const RegistrationForm = () => {
                     />
                 </div>
                 <div>
+                    <TextField id="outlined-password-input"
+                               label="Password"
+                               type="password"
+                               autoComplete="current-password"
+                               variant="standard"
+                               value={user.password}
+                               onChange={(e) => setUser({...user, password: e.target.value})}
+                    />
+                </div>
+                <div>
+                    <TextField id="outlined-password-input"
+                               label="Password"
+                               type="password"
+                               autoComplete="current-password"
+                               variant="standard"
+                               value={user.password}
+                               onChange={(e) => setUser({...user, password: e.target.value})}
+                    />
+                </div>
+                <div>
                     <Button variant="contained" color="success" onClick={handleClick}>
-                        Registration
+                        Edit
                     </Button>
                 </div>
             </form>
@@ -108,4 +119,4 @@ const RegistrationForm = () => {
     );
 };
 
-export default RegistrationForm;
+export default ProfileEdit;

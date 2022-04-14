@@ -11,41 +11,40 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    @Transactional
     @Override
     public Book create(Book object) {
         return bookRepository.create(object);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Book readById(Long id) {
         return bookRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public Book update(Book object) {
-        readById(object.getId());
         return bookRepository.update(object);
     }
 
+    @Transactional
     @Override
-    public Book delete(Book object) {
-        return bookRepository.delete(object);
+    public Book delete(Long id) {
+        Book book = readById(id);
+        return bookRepository.delete(book);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Book> getListBookByCategoryName(String name) {
         return bookRepository.getListBookByCategoryName(name);

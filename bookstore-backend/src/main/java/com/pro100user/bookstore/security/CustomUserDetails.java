@@ -7,18 +7,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String login;
+    private String email;
     private String password;
+    private boolean enabled;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
         CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.login = user.getEmail();
+        customUserDetails.email = user.getEmail();
         customUserDetails.password = user.getPassword();
-        customUserDetails.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        customUserDetails.enabled = user.isEnabled();
+        customUserDetails.grantedAuthorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
         return customUserDetails;
     }
 
@@ -34,7 +39,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override
@@ -54,6 +59,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

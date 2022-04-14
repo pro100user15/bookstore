@@ -1,6 +1,6 @@
-import React from 'react';
+import {FC} from 'react';
 
-const BooksPage: React.FC = () => {
+const BooksPage: FC = () => {
     return (
         <div>
             

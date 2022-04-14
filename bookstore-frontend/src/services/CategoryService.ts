@@ -14,7 +14,6 @@ class CategoryService {
    static async getCategoryById(id : string | undefined): Promise<AxiosResponse<CategoryWithCountBooks>> {
       return $api
           .get<CategoryWithCountBooks>(CATEGORIES_URL + id);
-          //.then(response => response.status ===);
    }
 
    static async createCategory(category: CategoryWithCountBooks): Promise<AxiosResponse<CategoryWithCountBooks>> {

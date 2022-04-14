@@ -35,7 +35,7 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T readById(I id) {
-        T entity = sessionFactory.getCurrentSession().get(basicClass, id);
+        T entity = sessionFactory.openSession().get(basicClass, id);
         if(entity == null) {
             throw new NotFoundException(basicClass.getName() + " with id " + id + " not found!");
         }
@@ -44,21 +44,19 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T update(T entity) {
-        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
     public T delete(T entity) {
-        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().remove(entity);
         return entity;
     }
 
     @Override
     public List<T> getAll() {
-        return sessionFactory.getCurrentSession()
+        return sessionFactory.openSession()
                 .createQuery("FROM " + basicClass.getName())
                 .getResultList();
     }

@@ -11,35 +11,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TranslatorServiceImpl implements TranslatorService {
 
     private final TranslatorRepository translatorRepository;
 
+    @Transactional
     @Override
     public Translator create(Translator object) {
         return translatorRepository.create(object);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public Translator readById(Long id) {
         return translatorRepository.readById(id);
     }
 
+    @Transactional
     @Override
     public Translator update(Translator object) {
-        readById(object.getId());
         return translatorRepository.update(object);
     }
 
+    @Transactional
     @Override
-    public Translator delete(Translator object) {
-        return translatorRepository.delete(object);
+    public Translator delete(Long id) {
+        Translator translator = readById(id);
+        return translatorRepository.delete(translator);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Translator> getAll() {
         return translatorRepository.getAll();
