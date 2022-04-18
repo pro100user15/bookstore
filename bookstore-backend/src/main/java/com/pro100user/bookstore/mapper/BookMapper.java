@@ -1,8 +1,8 @@
 package com.pro100user.bookstore.mapper;
 
 import com.pro100user.bookstore.dto.BookCreateDTO;
+import com.pro100user.bookstore.dto.BookDTO;
 import com.pro100user.bookstore.dto.BookDetailsDTO;
-import com.pro100user.bookstore.dto.BookListDTO;
 import com.pro100user.bookstore.model.Author;
 import com.pro100user.bookstore.model.Book;
 import org.mapstruct.Mapper;
@@ -38,6 +38,6 @@ public interface BookMapper {
 
     BookDetailsDTO toBookDetailsDTO(Book book);
 
-    List<BookListDTO> toBookListDTO(List<Book> books);
-    BookListDTO toBookListDTO(Book book);
+    List<BookDTO> toBookListDTO(List<Book> books);
+    BookDTO toBookListDTO(Book book);
 }

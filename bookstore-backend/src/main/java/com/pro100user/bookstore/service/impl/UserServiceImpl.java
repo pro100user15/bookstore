@@ -1,6 +1,6 @@
 package com.pro100user.bookstore.service.impl;
 
-import com.pro100user.bookstore.dto.BookListDTO;
+import com.pro100user.bookstore.dto.BookDTO;
 import com.pro100user.bookstore.dto.UserEditDTO;
 import com.pro100user.bookstore.exception.NotFoundException;
 import com.pro100user.bookstore.mapper.BookMapper;
@@ -11,10 +11,8 @@ import com.pro100user.bookstore.model.enums.Role;
 import com.pro100user.bookstore.repository.BookRepository;
 import com.pro100user.bookstore.repository.UserRepository;
 import com.pro100user.bookstore.security.CustomUserDetails;
-import com.pro100user.bookstore.service.BookService;
 import com.pro100user.bookstore.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,14 +77,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookListDTO> getWishList(String email) {
+    public List<BookDTO> getWishList(String email) {
         return bookMapper.toBookListDTO(findByEmail(email).getWishList()
                 .stream().collect(Collectors.toList()));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public BookListDTO toggleWishList(String email, Long bookId) {
+    public BookDTO toggleWishList(String email, Long bookId) {
         Book book = bookRepository.readById(bookId);
         User user = findByEmail(email);
         if (user.getWishList().contains(book)) {

@@ -14,8 +14,7 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import './Header.css';
 import {toastr} from "react-redux-toastr";
-import $api from "../../http";
-import {BookList} from "../../models/Book";
+import Tooltip from '@mui/material/Tooltip';
 
 interface ISearchForm {
     search: string
@@ -131,22 +130,26 @@ const Header: FC = () => {
                                      className={`header-link ${activeTab === 5 ? activeClass : ''}`}
                                      onClick={e => setActiveTab(5)}
                             >
-                                <IconButton aria-label="wish-list">
-                                    {
-                                        activeTab === 5 ?
-                                            <FavoriteOutlinedIcon/>
-                                            :
-                                            <FavoriteBorderOutlinedIcon/>
-                                    }
-                                </IconButton>
+                                <Tooltip title="Wish list">
+                                    <IconButton aria-label="wish-list">
+                                        {
+                                            activeTab === 5 ?
+                                                <FavoriteOutlinedIcon/>
+                                                :
+                                                <FavoriteBorderOutlinedIcon/>
+                                        }
+                                    </IconButton>
+                                </Tooltip>
                             </NavLink>
                             :
                             <NavLink to={'/login'}
                                      onClick={e => toastr.info("Wish list", "To display the list of desired books, you need to log in to your account")}
                             >
-                                <IconButton aria-label="wish-list">
-                                    <FavoriteBorderOutlinedIcon/>
-                                </IconButton>
+                                <Tooltip title="Wish list">
+                                    <IconButton aria-label="wish-list">
+                                        <FavoriteBorderOutlinedIcon/>
+                                    </IconButton>
+                                </Tooltip>
                             </NavLink>
                         }
                         {((roles && roles.length) >= 1 && !roles.includes(Role.GUEST)) ?

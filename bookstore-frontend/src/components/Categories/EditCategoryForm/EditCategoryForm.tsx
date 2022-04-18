@@ -46,7 +46,6 @@ const EditCategoryForm: FC<EditCategoryFormProps> = ({setModalEdit}) => {
             })
             .catch(reason => {
                 if (reason.response.status === 400) {
-                    toastr.warning('Message', reason.response.data.error);
                     setError("name", { type: "custom", message: reason.response.data.error});
                     setFocus("name");
                 }

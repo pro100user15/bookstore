@@ -23,7 +23,6 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    @Transactional
     @Override
     public CategoryDTO create(CategoryDTO category) {
         if(categoryRepository.findByName(category.getName()) != null)
@@ -35,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryWithBooksDTO readById(Long id) {
         return new CategoryWithBooksDTO(
                 categoryRepository.readById(id),
@@ -42,7 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
-    @Transactional
     @Override
     public CategoryWithBooksDTO update(CategoryWithBooksDTO categoryDto) {
         Category category = categoryRepository.findByName(categoryDto.getName());
@@ -56,7 +55,6 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
-    @Transactional
     @Override
     public CategoryDTO delete(Long id) {
         Category category = categoryRepository.readById(id);
@@ -66,16 +64,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> getAll() {
         return categoryRepository.getAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryWithBooksDTO> getCategoriesWithCountBooks() {
         return getAll().stream().map(category ->
                 new CategoryWithBooksDTO(category,

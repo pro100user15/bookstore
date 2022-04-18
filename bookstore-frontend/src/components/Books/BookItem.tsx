@@ -31,7 +31,7 @@ const BookItem: FC<BookItemProps> = ({book}) => {
     const likeBook = (id: number) => {
         $api.post("/user/wish-list", id)
             .then(response => {
-                toastr.success("Bookstore", "The book has been successfully added to the list of favorites");
+                toastr.success("Bookstore", "The book has been successfully added/deleted to list of favorites");
             })
             .catch(reason => {
                 toastr.error("Error", "There were technical problems");

@@ -1,8 +1,8 @@
 package com.pro100user.bookstore.controller;
 
 import com.pro100user.bookstore.dto.BookCreateDTO;
+import com.pro100user.bookstore.dto.BookDTO;
 import com.pro100user.bookstore.dto.BookDetailsDTO;
-import com.pro100user.bookstore.dto.BookListDTO;
 import com.pro100user.bookstore.model.enums.Language;
 import com.pro100user.bookstore.model.enums.Type;
 import com.pro100user.bookstore.service.BookService;
@@ -26,9 +26,9 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<BookListDTO>> books(@RequestParam(defaultValue = "1") int page,
-                                                   @RequestParam(defaultValue = "25") int size,
-                                                   @RequestParam(required = false) String search) {
+    public ResponseEntity<List<BookDTO>> books(@RequestParam(defaultValue = "1") int page,
+                                               @RequestParam(defaultValue = "25") int size,
+                                               @RequestParam(required = false) String search) {
         return new ResponseEntity<>(bookService.getPageBooks(page, size), HttpStatus.OK);
     }
 
@@ -38,12 +38,12 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookListDTO> create(@RequestBody BookCreateDTO dto) {
+    public ResponseEntity<BookDTO> create(@RequestBody BookCreateDTO dto) {
         return new ResponseEntity<>(bookService.create(dto), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<BookListDTO> update(@RequestBody BookCreateDTO dto) {
+    public ResponseEntity<BookDTO> update(@RequestBody BookCreateDTO dto) {
         return new ResponseEntity<>(bookService.update(dto), HttpStatus.OK);
     }
 

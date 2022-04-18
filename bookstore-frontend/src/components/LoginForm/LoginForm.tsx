@@ -110,9 +110,9 @@ const LoginForm: FC = () => {
                 >
                     Log in
                 </Button>
-                <Typography component="div" sx={{marginTop: "10px"}}>
+                {/*<Typography component="div" sx={{marginTop: "10px"}}>
                     <NavLink to='/registration' className="link">Forgot password?</NavLink>
-                </Typography>
+                </Typography>*/}
                 <Typography component="div" sx={{marginTop: "5px"}}>
                     Don’t have an account?
                     <NavLink to='/registration' className="link">Sign Up</NavLink>

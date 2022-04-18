@@ -1,8 +1,8 @@
 package com.pro100user.bookstore.service.impl;
 
 import com.pro100user.bookstore.dto.BookCreateDTO;
+import com.pro100user.bookstore.dto.BookDTO;
 import com.pro100user.bookstore.dto.BookDetailsDTO;
-import com.pro100user.bookstore.dto.BookListDTO;
 import com.pro100user.bookstore.mapper.BookMapper;
 import com.pro100user.bookstore.model.Book;
 import com.pro100user.bookstore.repository.BookRepository;
@@ -21,9 +21,8 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    @Transactional
     @Override
-    public BookListDTO create(BookCreateDTO dto) {
+    public BookDTO create(BookCreateDTO dto) {
         return bookMapper.toBookListDTO(
                 bookRepository.create(
                         bookMapper.toBook(dto)
@@ -39,9 +38,8 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional
     @Override
-    public BookListDTO update(BookCreateDTO dto) {
+    public BookDTO update(BookCreateDTO dto) {
         return bookMapper.toBookListDTO(
                 bookRepository.update(
                         bookMapper.toBook(dto)
@@ -49,7 +47,6 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional
     @Override
     public BookDetailsDTO delete(Long id) {
         return bookMapper.toBookDetailsDTO(
@@ -58,32 +55,37 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookListDTO> getAll() {
+    @Transactional(readOnly = true)
+    public List<BookDTO> getAll() {
         return bookMapper.toBookListDTO(
                 bookRepository.getAll()
         );
     }
 
     @Override
-    public List<BookListDTO> getPageBooks(int page, int size) {
+    @Transactional(readOnly = true)
+    public List<BookDTO> getPageBooks(int page, int size) {
         return bookMapper.toBookListDTO(
                 bookRepository.getPageBooks(page, size)
         );
     }
 
     @Override
-    public List<BookListDTO> searchBooks(int page, int size, String search) {
+    @Transactional(readOnly = true)
+    public List<BookDTO> searchBooks(int page, int size, String search) {
         return bookMapper.toBookListDTO(
                 bookRepository.searchBooks(page, size, search)
         );
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getCount() {
         return bookRepository.getCount();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Book> getListBookByCategoryName(String name) {
         return bookRepository.getListBookByCategoryName(name);
     }

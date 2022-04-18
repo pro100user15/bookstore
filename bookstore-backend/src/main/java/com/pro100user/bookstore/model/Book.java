@@ -31,7 +31,7 @@ public class Book implements Serializable {
     @Column(length = 64, nullable = false)
     @NotEmpty(message = "Name cannot be empty")
     private String name;
-    @Fetch(FetchMode.JOIN)
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "author_books",
@@ -49,7 +49,6 @@ public class Book implements Serializable {
     @NotNull
     private String image;
 
-    @Fetch(FetchMode.JOIN)
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Category.class)
     @JoinColumn(name = "category_id")

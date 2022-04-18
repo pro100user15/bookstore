@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Slf4j
-@Transactional
+@Transactional(propagation = Propagation.SUPPORTS)
 public abstract class BasicRepositoryImpl<T extends Serializable, I extends Serializable> implements BasicRepository<T, I> {
 
     protected final SessionFactory sessionFactory;
@@ -46,7 +47,6 @@ public abstract class BasicRepositoryImpl<T extends Serializable, I extends Seri
 
     @Override
     public T update(T entity) {
-        sessionFactory.getCurrentSession().clear();
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }

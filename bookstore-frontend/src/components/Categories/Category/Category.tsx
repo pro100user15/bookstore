@@ -16,16 +16,6 @@ const Category: FC = () => {
     const [modalCreate, setModalCreate] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        CategoryService.getCategories()
-            .then(response => {
-                dispatch({type: CategoryActionEnum.SET_CATEGORIES, payload: response.data});
-            });
-    }, []);
-
-
     return (
         <Container maxWidth="xl" sx={{marginTop: "64px", paddingTop: "10px"}}>
             <Button variant="contained" color="success" onClick={() => setModalCreate(true)}>

@@ -1,12 +1,10 @@
 package com.pro100user.bookstore.controller;
 
 import com.pro100user.bookstore.annotation.CurrentUser;
-import com.pro100user.bookstore.dto.BookListDTO;
+import com.pro100user.bookstore.dto.BookDTO;
 import com.pro100user.bookstore.dto.UserDTO;
 import com.pro100user.bookstore.dto.UserEditDTO;
-import com.pro100user.bookstore.mapper.BookMapper;
 import com.pro100user.bookstore.mapper.UserMapper;
-import com.pro100user.bookstore.model.User;
 import com.pro100user.bookstore.security.CustomUserDetails;
 import com.pro100user.bookstore.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    //TODO: Mapper to Service layer
     private final UserMapper userMapper;
-    private final BookMapper bookMapper;
 
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> profile(@CurrentUser CustomUserDetails user) {
@@ -40,13 +38,13 @@ public class UserController {
     }
 
     @GetMapping("/wish-list")
-    public ResponseEntity<List<BookListDTO>> wishList(@CurrentUser CustomUserDetails user) {
+    public ResponseEntity<List<BookDTO>> wishList(@CurrentUser CustomUserDetails user) {
         return ResponseEntity.ok(userService.getWishList(user.getUsername()));
     }
 
     @PostMapping("/wish-list")
-    public ResponseEntity<BookListDTO> wishList(@CurrentUser CustomUserDetails user,
-                                                @RequestBody Long id) {
+    public ResponseEntity<BookDTO> wishList(@CurrentUser CustomUserDetails user,
+                                            @RequestBody Long id) {
         return ResponseEntity.ok(userService.toggleWishList(user.getUsername(), id));
     }
 }

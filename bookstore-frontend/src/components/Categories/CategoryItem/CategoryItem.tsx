@@ -11,6 +11,7 @@ import {
     UpdateCategoryAction
 } from "../../../store/actions/category";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {toastr} from "react-redux-toastr";
 
 interface CategoryItemProps {
     index: number,
@@ -41,6 +42,9 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                     type: CategoryActionEnum.DELETE_CATEGORY, payload: category
                 } as DeleteCategoryAction);
                 setOpenDialog(false);
+            })
+            .catch(reason => {
+                toastr.error('Error', "Can't delete this category!");
             });
     };
 
@@ -52,13 +56,7 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
             </div>
             <div>
                 <Button variant="outlined" onClick={edit} style={{marginRight: '5px'}}>Edit</Button>
-                <Button variant="outlined" onClick={e => {
-                    category.countBooks > 0 ?
-                        setOpenDialog(true)
-                        :
-                        remove()
-                }}
-                >
+                <Button variant="outlined" onClick={e => setOpenDialog(true)}>
                     Delete
                 </Button>
                 <Dialog
@@ -72,11 +70,32 @@ const CategoryItem: FC<CategoryItemProps> = ({index, category, setModalEdit}) =>
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            This category cannot be deleted because books are linked to it
+                            {
+                                category.countBooks > 0 ?
+                                <p>This category cannot be deleted because books are linked to it</p>
+                                :
+                                <p>1111</p>
+                            }
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={e => setOpenDialog(false)}>Ok</Button>
+                        {
+                            category.countBooks > 0 ?
+                            (
+                                <Button onClick={e => setOpenDialog(false)}>Ok</Button>   
+                            )
+                            :
+                            <div>
+                                    <Button onClick={e => setOpenDialog(false)}>No</Button>
+                                    <Button onClick={e => {
+                                        remove();
+                                        setOpenDialog(false);
+                                    }}
+                                    >
+                                    Yes
+                                    </Button>
+                                </div>
+                        }
                     </DialogActions>
                 </Dialog>
             </div>

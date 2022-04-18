@@ -38,6 +38,7 @@ public class BookRepositoryImpl extends BasicRepositoryImpl<Book, Long> implemen
                 .getResultList();
     }
 
+    //TODO: Search books
     @Override
     public List<Book> searchBooks(int page, int size, String search) {
         return getPageBooks(page, size);
